@@ -1,7 +1,6 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
-#include <string.h> //Para el manejo de strings
 
 // Lets define the particle "in" as information releated with source machine and "out" as information releated with target machine
 
@@ -13,6 +12,8 @@ typedef enum {
 // Represents a network connection (proxy context)
 
 typedef struct net_socket {
+    int fd; 
+
     char *ip_in;   // "255.255.255.255"
     int port_in;
 
