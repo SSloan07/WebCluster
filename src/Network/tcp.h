@@ -2,12 +2,19 @@
 #define TCP_H
 
 #include <stddef.h>
+#include <netinet/in.h> 
+#include <arpa/inet.h>  
 #include <sys/types.h>
 #include <sys/socket.h>
+#include "socket.h" // This is our interface for managing Proxy 
 
 // Server
 int tcp_create_server(const char *ip, int port, int backlog);
-int tcp_accept(int server_fd, char *ip, int *port);
+net_socket_t* tcp_accept(int server_fd);
+
+// Server Auxiliary functions
+int socket_creation();
+struct sockaddr_in configure_addr(const char *ip, int port); 
 
 // Client
 int tcp_connect(const char *ip, int port);
