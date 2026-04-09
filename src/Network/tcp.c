@@ -26,6 +26,8 @@ struct sockaddr_in configure_addr(const char *ip, int port){
     return server_addr; 
 }
 
+// Server funcionts 
+
 int tcp_create_server(const char *ip, int port, int backlog){
     int fd = socket_creation(); 
 
@@ -70,7 +72,7 @@ net_socket_t* tcp_accept(int fd_server) {
     sock_info->fd = client_fd; 
 
     sock_info->ip_in = strdup(inet_ntoa(client_addr.sin_addr)); // For managing automaticlly pointers 
-    sock_info->port_in = ntohs(client_addr.sin_port); // Remeber this is a enum field
+    sock_info->port_in = ntohs(client_addr.sin_port); // Remember this is a enum field
     
     sock_info->protocol = PROTO_TCP; 
 
@@ -79,4 +81,35 @@ net_socket_t* tcp_accept(int fd_server) {
     sock_info->port_out = 0; 
 
     return sock_info; 
+}
+
+void tcp_close (net_socket_t *sock){
+    // In case we couldnd inicialize a socket
+    if (sock == NULL){
+        return; 
+    }
+
+    // This is the comunication channel 
+    if(sock->fd >= 0){
+        close(sock->fd); 
+    }   
+
+    // This is for the fields ip from client and server 
+
+    if(sock->ip_in != NULL){
+        free(sock->ip_in); 
+    }
+
+    if(sock->ip_out != NULL){
+        free(sock->ip_out);
+    }
+
+    // Liberate the structure
+    free(sock); 
+
+    printf("Socket Liberated. Siuuu"); 
+
+    return; 
+    
+
 }

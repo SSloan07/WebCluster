@@ -24,6 +24,6 @@ ssize_t tcp_send_all(int fd, const void *buf, size_t len);
 ssize_t tcp_recv(int fd, void *buf, size_t len);
 
 // Cleanup
-void tcp_close(int fd);
+void tcp_close(net_socket_t *sock);
 
 #endif
