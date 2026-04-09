@@ -1,4 +1,8 @@
-
+#include <stdio.h>      
+#include <stdlib.h>     
+#include <string.h>     
+#include <unistd.h>     
+#include <arpa/inet.h>
 #include "tcp.h"
 
 int socket_creation(){
@@ -26,7 +30,7 @@ struct sockaddr_in configure_addr(const char *ip, int port){
     return server_addr; 
 }
 
-// Server funcionts 
+// Server funtions
 
 int tcp_create_server(const char *ip, int port, int backlog){
     int fd = socket_creation(); 
@@ -83,6 +87,49 @@ net_socket_t* tcp_accept(int fd_server) {
     return sock_info; 
 }
 
+// Client functions 
+
+net_socket_t* tcp_connect (const char *ip, int port){
+    int fd = socket_creation(); 
+    if (fd == -1){
+        printf("Hubo error al conectarse al crear el file descriptor del lado del cliente"); 
+        return NULL; 
+    }
+
+    struct sockaddr_in server_addr = configure_addr(ip,port); 
+
+    if (connect(fd, (struct sockaddr *)&server_addr,sizeof(server_addr))){
+        printf("Error al conectarse al server del lado del cliente"); 
+        close(fd); 
+        return NULL; 
+    }
+
+    net_socket_t *sock_info = malloc(sizeof(net_socket_t)); 
+
+    if (sock_info == NULL){
+        printf("No se inicializó la estructura de socket"); 
+        close(fd); 
+        return NULL; 
+    }
+
+    sock_info->fd = fd; 
+
+    sock_info->ip_out = strdup(ip); 
+    sock_info->port_out = port; 
+
+    sock_info->protocol = PROTO_TCP; 
+
+    sock_info->ip_in = NULL; 
+    sock_info->port_in = 0; 
+
+    printf("Muy berraco, se conectó al server"); 
+
+    return sock_info; 
+
+}   
+
+// Management of memory 
+
 void tcp_close (net_socket_t *sock){
     // In case we couldnd inicialize a socket
     if (sock == NULL){
@@ -113,3 +160,48 @@ void tcp_close (net_socket_t *sock){
     
 
 }
+
+// Transfer Data functions 
+
+/*There is a small detail that has to be explain, the function send() of sys/sockets is the part in charge of sending the Segment 
+and as we have seen in class a file greater than PDU has to be send in multiples segments. In this ideas order, send() can 
+take one Segment and send it to the client, but it doesn't guarantee that all the segments are sent, this is the reason we have to implement 
+the following function 'tcp_send_all()' */
+
+ssize_t tcp_send_all(int fd, const void *buf, size_t len){
+    size_t total_sent = 0; 
+    const char *p = (const char *) buf; 
+    int number_of_segments = 0; 
+
+    while (total_sent < len){
+        ssize_t sent = send(fd,p+total_sent,len - total_sent, 0); 
+        if (sent == -1){
+            printf ("Hubo un error enviando un segmento"); 
+            return -1; 
+        }
+
+        total_sent += sent; 
+        number_of_segments += 1; 
+    }
+    printf("Total bytes sent: %zu en %d segmentos.\n", total_sent, number_of_segments);
+    return (ssize_t)total_sent; 
+}
+
+ssize_t tcp_recv(int fd, void *buf, size_t len) {
+
+    ssize_t bytes_read = recv(fd, buf, len, 0);
+
+    if (bytes_read == -1) {
+        perror("Ni siquiera llegó el archivo");
+        return -1;
+    } 
+    
+    if (bytes_read == 0) {
+        printf("El otro lado cerró la conexión\n");
+        return 0;
+    }
+
+    printf("Se recibieron %zd bytes.\n", bytes_read);
+    return (ssize_t)bytes_read;
+}
+

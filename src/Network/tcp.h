@@ -17,7 +17,7 @@ int socket_creation();
 struct sockaddr_in configure_addr(const char *ip, int port); 
 
 // Client
-int tcp_connect(const char *ip, int port);
+net_socket_t* tcp_connect(const char *ip, int port);
 
 // Data transfer
 ssize_t tcp_send_all(int fd, const void *buf, size_t len);
