@@ -50,3 +50,873 @@ Hola, soy backend3 en el puerto 5003\n
 
 ========================
 [2026-04-14 16:26:53] [INFO] Comunicación completada correctamente
+[2026-04-14 17:34:36] [INFO] PIBL iniciado correctamente
+
+[2026-04-14 17:34:47] ===== REQUEST =====
+Cliente: 127.0.0.1:45006
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:34:47] ===== RESPONSE =====
+Cliente: 127.0.0.1:45006
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:34:47] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44384
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44384
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44390
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44396
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44390
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44396
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44406
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44406
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44420
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44420
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44426
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44426
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44428
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44428
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44444
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44454
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44444
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44454
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:35:43] ===== REQUEST =====
+Cliente: 127.0.0.1:44464
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:35:43] ===== RESPONSE =====
+Cliente: 127.0.0.1:44464
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:35:43] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41090
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41090
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41096
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41096
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41112
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41112
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41122
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41122
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41134
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41134
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41146
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41146
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41152
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41152
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41158
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41158
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41172
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41172
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:55:53] ===== REQUEST =====
+Cliente: 127.0.0.1:41180
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:55:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:41180
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:55:53] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37864
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37864
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37874
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37874
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37880
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37880
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37882
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37882
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37896
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37896
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37900
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37908
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37908
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37910
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37900
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37910
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37914
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37914
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+
+[2026-04-14 17:56:04] ===== REQUEST =====
+Cliente: 127.0.0.1:37928
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 17:56:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:37928
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 17:56:04] [INFO] Comunicación completada correctamente
+[2026-04-14 18:07:53] [INFO] PIBL iniciado correctamente
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52780
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52784
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52784
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52800
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52800
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52806
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52816
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52816
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52820
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52780
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52820
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52806
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52832
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52832
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52838
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52838
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52846
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52846
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:08:07] ===== REQUEST =====
+Cliente: 127.0.0.1:52860
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:08:07] ===== RESPONSE =====
+Cliente: 127.0.0.1:52860
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 18:08:07] [INFO] Comunicación completada correctamente
+[2026-04-14 18:10:03] [INFO] PIBL iniciado correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38162
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38162
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38178
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38178
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38180
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38180
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38190
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38190
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38202
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38202
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38208
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38208
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38212
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38212
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38228
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38228
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38242
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38242
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+
+[2026-04-14 18:10:12] ===== REQUEST =====
+Cliente: 127.0.0.1:38254
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 18:10:12] ===== RESPONSE =====
+Cliente: 127.0.0.1:38254
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
