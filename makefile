@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -I./src/Network -I./src/Proxy -pthread -g
 
 OBJ_NET = src/Network/tcp.o
-OBJ_PROXY = src/Proxy/Cluster.o src/Proxy/RoundRobin.o
+OBJ_PROXY = src/Proxy/Cluster.o src/Proxy/RoundRobin.o src/Proxy/Logger.o
 OBJ_SERV = $(OBJ_NET) $(OBJ_PROXY)
 
 all: servidor cliente backend

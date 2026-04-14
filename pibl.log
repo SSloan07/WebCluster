@@ -1,0 +1,52 @@
+[2026-04-14 16:25:27] [INFO] PIBL iniciado correctamente
+
+[2026-04-14 16:25:36] ===== REQUEST =====
+Cliente: 127.0.0.1:56152
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 16:25:36] ===== RESPONSE =====
+Cliente: 127.0.0.1:56152
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-14 16:25:36] [INFO] Comunicación completada correctamente
+
+[2026-04-14 16:26:38] ===== REQUEST =====
+Cliente: 127.0.0.1:45638
+Backend: 127.0.0.1:5002
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 16:26:38] ===== RESPONSE =====
+Cliente: 127.0.0.1:45638
+Backend: 127.0.0.1:5002
+Contenido:
+\n
+Hola, soy backend2 en el puerto 5002\n
+
+========================
+[2026-04-14 16:26:38] [INFO] Comunicación completada correctamente
+
+[2026-04-14 16:26:53] ===== REQUEST =====
+Cliente: 127.0.0.1:51180
+Backend: 127.0.0.1:5003
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-14 16:26:53] ===== RESPONSE =====
+Cliente: 127.0.0.1:51180
+Backend: 127.0.0.1:5003
+Contenido:
+\n
+Hola, soy backend3 en el puerto 5003\n
+
+========================
+[2026-04-14 16:26:53] [INFO] Comunicación completada correctamente

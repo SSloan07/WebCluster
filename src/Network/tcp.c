@@ -35,11 +35,6 @@ struct sockaddr_in configure_addr(const char *ip, int port){
 int tcp_create_server(const char *ip, int port, int backlog){
     int fd = socket_creation(); 
 
-    if (fd == -1){
-        printf("Mijo que pasó, esto dió error al crear el socket no puede seguir, arregle eso más bien");
-        return  -1; 
-    }
-
     struct sockaddr_in server_addr = configure_addr(ip, port); 
 
     if (bind(fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
