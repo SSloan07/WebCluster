@@ -1,11 +1,13 @@
 CC = gcc
 
-CFLAGS = -Wall -Wextra -I./src/Network -I./src/Proxy -I./ManageClient -pthread -g
+CFLAGS = -Wall -Wextra -I./src/Network -I./src/Proxy -I./ManageClient -I./Configuration -pthread -g
 
 OBJ_NET = src/Network/tcp.o
 OBJ_PROXY = src/Proxy/Cluster.o src/Proxy/RoundRobin.o src/Proxy/Logger.o
 OBJ_MANAGE = ManageClient/manage_client.o
-OBJ_SERV = $(OBJ_NET) $(OBJ_PROXY) $(OBJ_MANAGE)
+OBJ_CONFIG = Configuration/config.o
+
+OBJ_SERV = $(OBJ_NET) $(OBJ_PROXY) $(OBJ_MANAGE) $(OBJ_CONFIG)
 
 all: servidor cliente backend
 
@@ -22,7 +24,7 @@ backend: $(OBJ_NET) backend_main.c
 	$(CC) $(CFLAGS) backend_main.c $(OBJ_NET) -o backend
 
 clean:
-	rm -f $(OBJ_SERV) $(OBJ_NET) $(OBJ_MANAGE) servidor cliente backend
+	rm -f $(OBJ_NET) $(OBJ_PROXY) $(OBJ_MANAGE) $(OBJ_CONFIG) servidor cliente backend
 	@echo "Limpieza completada. Siuuu"
 
 .PHONY: all clean

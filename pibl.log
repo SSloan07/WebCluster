@@ -920,3 +920,22 @@ Hola, soy backend1 en el puerto 5001\n
 
 ========================
 [2026-04-14 18:10:12] [INFO] Comunicación completada correctamente
+[2026-04-17 18:35:36] [INFO] PIBL iniciado correctamente
+[2026-04-17 18:35:36] [INFO] Archivo de configuración cargado correctamente
+
+[2026-04-17 18:35:51] ===== REQUEST =====
+Cliente: 127.0.0.1:46298
+Backend: 127.0.0.1:5001
+Contenido:
+Hola servidor, soy el cliente berraco!
+=======================
+
+[2026-04-17 18:35:51] ===== RESPONSE =====
+Cliente: 127.0.0.1:46298
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-17 18:35:51] [INFO] Comunicación completada correctamente
