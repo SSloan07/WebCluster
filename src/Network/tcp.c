@@ -93,7 +93,7 @@ net_socket_t* tcp_connect (const char *ip, int port){
 
     struct sockaddr_in server_addr = configure_addr(ip,port); 
 
-    if (connect(fd, (struct sockaddr *)&server_addr,sizeof(server_addr))){
+    if (connect(fd, (struct sockaddr *)&server_addr, sizeof(server_addr))){
         printf("Error al conectarse al server del lado del cliente"); 
         close(fd); 
         return NULL; 

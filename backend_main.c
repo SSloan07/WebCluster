@@ -16,10 +16,11 @@ int main(int argc, char *argv[]) {
 
     int port = atoi(argv[1]);
 
-    if (port <0){
-        printf("Error, puerto invalido"); 
+    if (port < 0) {
+        printf("Error, puerto invalido\n");
         return -1;
     }
+
     const char *backend_name = (argc >= 3) ? argv[2] : "backend";
 
     printf("=== Iniciando %s en puerto %d ===\n", backend_name, port);
@@ -35,13 +36,16 @@ int main(int argc, char *argv[]) {
     while (1) {
         printf("\n[%s] Esperando conexión...\n", backend_name);
 
-        net_socket_t *client_sock = tcp_accept(server_fd); // Ojo pues, aquí el cliente sería el proxy inverso (No el cliente final)
+        net_socket_t *client_sock = tcp_accept(server_fd);
         if (client_sock == NULL) {
             printf("[%s][ERROR] Falló tcp_accept\n", backend_name);
             continue;
         }
 
-        printf("[%s] Conexión desde %s:%d\n", backend_name, client_sock->ip_in, client_sock->port_in);
+        printf("[%s] Conexión desde %s:%d\n",
+               backend_name,
+               client_sock->ip_in,
+               client_sock->port_in);
 
         char buffer[BUFFER_SIZE];
         ssize_t n = tcp_recv(client_sock->fd, buffer, sizeof(buffer) - 1);
@@ -54,15 +58,37 @@ int main(int argc, char *argv[]) {
 
         buffer[n] = '\0';
 
-        printf("[%s] Recibidos %zd bytes: %s\n", backend_name, n, buffer);
+        printf("[%s] Recibidos %zd bytes:\n%s\n", backend_name, n, buffer);
+
+        char body[BUFFER_SIZE];
+        snprintf(body, sizeof(body),
+                 "Hola, soy %s en el puerto %d\n",
+                 backend_name, port);
 
         char response[BUFFER_SIZE];
-        snprintf(response, sizeof(response),"\nHola, soy %s en el puerto %d\n",backend_name, port);
+        int response_len = snprintf(
+            response,
+            sizeof(response),
+            "HTTP/1.1 200 OK\r\n"
+            "Content-Length: %zu\r\n"
+            "Content-Type: text/plain\r\n"
+            "Connection: close\r\n"
+            "\r\n"
+            "%s",
+            strlen(body),
+            body
+        );
 
-        if (tcp_send_all(client_sock->fd, response, strlen(response)) < 0) {
+        if (response_len < 0 || response_len >= (int)sizeof(response)) {
+            printf("[%s][ERROR] La respuesta HTTP excede el buffer.\n", backend_name);
+            tcp_close(client_sock);
+            continue;
+        }
+
+        if (tcp_send_all(client_sock->fd, response, (size_t)response_len) < 0) {
             printf("[%s][ERROR] No se pudo enviar la respuesta.\n", backend_name);
         } else {
-            printf("[%s] Respuesta enviada: %s\n", backend_name, response);
+            printf("[%s] Respuesta HTTP enviada correctamente.\n", backend_name);
         }
 
         tcp_close(client_sock);

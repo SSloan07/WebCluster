@@ -963,3 +963,57 @@ Hola, soy backend1 en el puerto 5001\n
 
 ========================
 [2026-04-17 19:13:52] [INFO] Comunicación completada correctamente
+[2026-04-17 19:22:56] [INFO] PIBL iniciado correctamente
+[2026-04-17 19:22:56] [INFO] Archivo de configuración cargado correctamente
+
+[2026-04-17 19:23:01] ===== REQUEST =====
+Cliente: 127.0.0.1:43298
+Backend: 127.0.0.1:5001
+Contenido:
+GET / HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-04-17 19:23:01] ===== RESPONSE =====
+Cliente: 127.0.0.1:43298
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Content-Length: 37\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-17 19:23:01] [INFO] Comunicación completada correctamente
+
+[2026-04-17 19:23:35] ===== REQUEST =====
+Cliente: 127.0.0.1:45284
+Backend: 127.0.0.1:5001
+Contenido:
+GET / HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-04-17 19:23:35] ===== RESPONSE =====
+Cliente: 127.0.0.1:45284
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Content-Length: 37\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-17 19:23:35] [INFO] Comunicación completada correctamente
