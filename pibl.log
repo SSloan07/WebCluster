@@ -939,3 +939,27 @@ Hola, soy backend1 en el puerto 5001\n
 
 ========================
 [2026-04-17 18:35:51] [INFO] Comunicación completada correctamente
+[2026-04-17 19:13:33] [INFO] PIBL iniciado correctamente
+[2026-04-17 19:13:33] [INFO] Archivo de configuración cargado correctamente
+
+[2026-04-17 19:13:52] ===== REQUEST =====
+Cliente: 127.0.0.1:44988
+Backend: 127.0.0.1:5001
+Contenido:
+GET / HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-04-17 19:13:52] ===== RESPONSE =====
+Cliente: 127.0.0.1:44988
+Backend: 127.0.0.1:5001
+Contenido:
+\n
+Hola, soy backend1 en el puerto 5001\n
+
+========================
+[2026-04-17 19:13:52] [INFO] Comunicación completada correctamente

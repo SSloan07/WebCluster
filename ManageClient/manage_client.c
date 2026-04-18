@@ -4,6 +4,7 @@
 #include "../src/Proxy/LoadBalancer.h"
 #include "../src/Network/socket.h"
 #include "../src/Network/tcp.h"
+#include "../src/HTTP/HttpParser.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -30,6 +31,8 @@ void *manage_client(void *arg) {
     char buffer[BUFFER_SIZE];
     net_socket_t *backend_sock = NULL;
     backend_t *target_server = NULL;
+    http_request_t request = {0};
+    http_parse_result_t parse_result = HTTP_PARSE_ERROR;
 
     pthread_mutex_lock(mutex);
 
@@ -63,6 +66,29 @@ void *manage_client(void *arg) {
         return NULL;
     }
 
+    parse_result = http_parse_request(buffer, (size_t) bytes_received, &request);
+
+    if (parse_result == HTTP_PARSE_OK && request.is_valid) {
+        printf(CYAN "[HTTP] Metodo: %s\n" RESET, request.method);
+        printf(CYAN "[HTTP] URI: %s\n" RESET, request.request_uri);
+        printf(CYAN "[HTTP] Version: %s\n" RESET, request.http_version);
+
+        const char *host = http_request_get_header(&request, "Host");
+        if (host != NULL) {
+            printf(CYAN "[HTTP] Host: %s\n" RESET, host);
+        }
+
+        if (!http_request_is_method_supported(&request)) {
+            printf(RED "[HTTP] Metodo no soportado por el proyecto.\n" RESET);
+        }
+    }
+    else if (parse_result == HTTP_PARSE_INCOMPLETE) {
+        printf(RED "[HTTP] Peticion HTTP incompleta.\n" RESET);
+    }
+    else {
+        printf(RED "[HTTP] Error al parsear la peticion HTTP.\n" RESET);
+    }
+
     printf(BLUE "[INFO] Se recibieron %zd bytes del cliente.\n" RESET, bytes_received);
 
     logger_request(
@@ -78,6 +104,7 @@ void *manage_client(void *arg) {
     if (backend_sock == NULL) {
         printf(RED "[ERROR] No se pudo conectar al backend.\n" RESET);
         logger_error("No se pudo conectar al backend seleccionado");
+        http_request_free(&request);
         tcp_close(client_sock);
         free(args);
         return NULL;
@@ -86,6 +113,7 @@ void *manage_client(void *arg) {
     if (tcp_send_all(backend_sock->fd, buffer, bytes_received) < 0) {
         printf(RED "[ERROR] Falló el envío hacia el backend.\n" RESET);
         logger_error("Falló el envío hacia el backend");
+        http_request_free(&request);
         tcp_close(backend_sock);
         tcp_close(client_sock);
         free(args);
@@ -120,6 +148,7 @@ void *manage_client(void *arg) {
         logger_info("Comunicación completada correctamente");
     }
 
+    http_request_free(&request);
     tcp_close(backend_sock);
     tcp_close(client_sock);
     free(args);
