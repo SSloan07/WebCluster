@@ -2,7 +2,7 @@
 #define PROCESS_REQUEST_H
 
 #include "structs/response.h"
-#include "structs/requestLine.h"
+#include "structs/request.h"
 
 HTTP_Status processRequest(RequestLine *req , HTTP_Response *res );
 

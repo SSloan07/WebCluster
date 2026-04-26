@@ -35,19 +35,6 @@ char *readFile(const char *filePath , size_t *outSize){
     return content;
 }
 
-int fileExist(const char *filePath){
-
-    char fullpath[256];
-    snprintf(fullpath, sizeof(fullpath), "%s%s", BASE_PATH, filePath);
-    FILE *file = fopen(fullpath , "rb");
-
-    if(file == NULL){
-        return -1;
-    }
-
-    return 0;
-}
-
 const char *getContentType(const char *filePath) {
     const char *ext = strrchr(filePath, '.');  // Ultima aparición de '.' y se trae el resto
     if (ext == NULL) return "application/octet-stream";  // Generico

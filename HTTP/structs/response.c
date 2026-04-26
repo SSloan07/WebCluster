@@ -2,7 +2,6 @@
 #include "../utils/enumToString.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 void printResponse(HTTP_Response *res) {
@@ -35,8 +34,8 @@ void printResponse(HTTP_Response *res) {
     }
 }
 
-HeaderList *createHeaderList(){
-    HeaderList *headerList = malloc(sizeof(HeaderList));
+Response_HeaderList *createResponseHeaderList(){
+    Response_HeaderList *headerList = malloc(sizeof(Response_HeaderList));
     headerList->count = 0;
     
     return headerList;
@@ -48,14 +47,14 @@ HTTP_Response *createHTTPResponse(){
     res->status = STATUS_NULL;
     res->httpVersion = VERSION_HTTP1;
     
-    res->headerList = createHeaderList();
+    res->headerList = createResponseHeaderList();
     res->content = NULL;
     res->contentLength = 0;
     
     return res;
 }
 
-int addHeader(HeaderList *list , const char *name , const char *value){
+int addResponseHeader(Response_HeaderList *list , const char *name , const char *value){
     if(list == NULL) return -1;
     if(list->count >= MAX_HEADERS) return -1;
 
@@ -71,7 +70,7 @@ int addHeader(HeaderList *list , const char *name , const char *value){
     return 0;
 }
 
-void freeHeaderList(HeaderList *list){
+void freeResponseHeaderList(Response_HeaderList *list){
     if (list == NULL) return;
 
     for (size_t i = 0; i < list->count; i++){
@@ -86,6 +85,6 @@ void freeResponse(HTTP_Response *res){
     if (res == NULL) return;
 
     free(res->content);
-    freeHeaderList(res->headerList);
+    freeResponseHeaderList(res->headerList);
     free(res);
 }

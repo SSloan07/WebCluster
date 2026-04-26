@@ -16,7 +16,7 @@ HTTP_Status processRequest(RequestLine *req , HTTP_Response *res){
             return HTTPGet(req , res);
 
         case METHOD_HEAD:
-            return HTTPHead(req);
+            return HTTPHead(req , res);
 
         case METHOD_POST:
             break;

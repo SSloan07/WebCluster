@@ -32,19 +32,22 @@ HTTP_Status HTTPGet(RequestLine *req , HTTP_Response *res){
     const char *contentType = "Content-Type";
     const char *server = "Server";
 
+    // Fecha
     char buffer[64];
     size_t bufferSize = sizeof(buffer);
     getDate(buffer , bufferSize);
+    addResponseHeader(res->headerList , date , buffer);
 
-    addHeader(res->headerList , date , buffer);
-
+    // Bytes del archivo
     char contentLengthStr[32];
     snprintf(contentLengthStr , sizeof(contentLengthStr) , "%zu", res->contentLength);
-    addHeader(res->headerList , contentLength , contentLengthStr);
+    addResponseHeader(res->headerList , contentLength , contentLengthStr);
 
-    addHeader(res->headerList , contentType , getContentType(req->requestURI));
+    // Tipo de archivo
+    addResponseHeader(res->headerList , contentType , getContentType(req->requestURI));
 
-    addHeader(res->headerList , server , "El server de los mas papus");
+    // Servidor
+    addResponseHeader(res->headerList , server , "El server de los mas papus");
     
     return STATUS_200;
     

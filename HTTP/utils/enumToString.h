@@ -1,6 +1,6 @@
 #ifndef ENUM_TO_STRING
 #define ENUM_TO_STRING
-#include "../structs/requestLine.h"
+#include "../structs/request.h"
 #include "../structs/response.h"
 
 const char *methodToString(HTTP_Method method);

@@ -1,6 +1,7 @@
-#include "getEnumRequestLine.h"
+#include "stringToEnum.h"
 
 #include <string.h>
+#include <strings.h>
 
 HTTP_Method getHTTPMethod(const char *strMethod){
 
@@ -22,3 +23,11 @@ HTTP_Version getHTTPVersion(const char *strVersion){
 
     return VERSION_UNKNOWN;
 }
+
+Request_Header_Name getRequestHeader(const char *strHeader){
+    
+    if(strcasecmp(strHeader , "Host") == 0) return HEADER_HOST; // Ignorar las mayusculas
+
+    return HEADER_UNKNOWN;
+}
+

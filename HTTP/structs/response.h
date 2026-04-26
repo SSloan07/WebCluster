@@ -1,7 +1,7 @@
 #ifndef RESPONSE_H
 #define RESPONSE_H
 
-#include "requestLine.h"
+#include "request.h"
 #include <stdlib.h>
 
 #define MAX_HEADERS 64
@@ -17,17 +17,17 @@ typedef enum {
 typedef struct {
     char *name;
     char *value;
-} Header;
+} Response_Header;
 
 typedef struct {
-    Header headers[MAX_HEADERS];
+    Response_Header headers[MAX_HEADERS];
     size_t count;
-} HeaderList;
+} Response_HeaderList;
 
 typedef struct {
     HTTP_Status status;
     HTTP_Version httpVersion;
-    HeaderList *headerList;
+    Response_HeaderList *headerList;
     char *content;
     size_t contentLength; 
 } HTTP_Response;
@@ -35,8 +35,8 @@ typedef struct {
 void printResponse( HTTP_Response *res);
 void freeResponse(HTTP_Response *res);
 HTTP_Response *createHTTPResponse();
-HeaderList *createHeaderList();
-int addHeader(HeaderList *list , const char *name , const char *value);
-void freeHeaderList(HeaderList *list);
+Response_HeaderList *createResponseHeaderList();
+int addResponseHeader(Response_HeaderList *list , const char *name , const char *value);
+void freeResponseHeaderList(Response_HeaderList *list);
 
 #endif
