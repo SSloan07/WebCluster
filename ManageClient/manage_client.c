@@ -78,9 +78,12 @@ void *manage_client(void *arg) {
             printf(CYAN "[HTTP] Host: %s\n" RESET, host);
         }
 
+
         if (!http_request_is_method_supported(&request)) {
             printf(RED "[HTTP] Metodo no soportado por el proyecto.\n" RESET);
         }
+
+        if ()
     }
     else if (parse_result == HTTP_PARSE_INCOMPLETE) {
         printf(RED "[HTTP] Peticion HTTP incompleta.\n" RESET);
