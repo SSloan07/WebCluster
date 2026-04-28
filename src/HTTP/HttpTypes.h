@@ -11,7 +11,7 @@
 #define HTTP_HEADER_KEY_MAX    64
 #define HTTP_HEADER_VALUE_MAX 256
 #define HTTP_MAX_HEADERS       64
-
+#define MAX_URI_LENGTH 2048
 typedef enum {
     HTTP_PARSE_OK = 0,
     HTTP_PARSE_INCOMPLETE = 1,
