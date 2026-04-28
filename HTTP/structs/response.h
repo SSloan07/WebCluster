@@ -8,8 +8,11 @@
 
 typedef enum {
     STATUS_200,
+    STATUS_201,
     STATUS_400,
     STATUS_404,
+    STATUS_405,
+    STATUS_500,
     STATUS_505,
     STATUS_NULL,
 } HTTP_Status;

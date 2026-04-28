@@ -4,6 +4,6 @@
 #include "../structs/request.h"
 #include "../structs/response.h"
 
-HTTP_Status HTTPHead(RequestLine *req, HTTP_Response *res);
+HTTP_Status HTTPHead(Request *req, HTTP_Response *res);
 
 #endif

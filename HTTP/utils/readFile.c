@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char *BASE_PATH = "/home/alejo/Universidad/ProyectoTelematica1";
+char *BASE_PATH = "/home/alejo/Universidad/Telematica/WebCluster";
 
 char *readFile(const char *filePath , size_t *outSize){
 

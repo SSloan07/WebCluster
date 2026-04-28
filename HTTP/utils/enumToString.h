@@ -7,5 +7,6 @@ const char *methodToString(HTTP_Method method);
 const char *versionToString(HTTP_Version version);
 const char *statusToString(HTTP_Status status);
 const char *statusToReasonPhrase(HTTP_Status status);
+const char *headerToString(Request_Header_Name name);
 
 #endif

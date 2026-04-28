@@ -1,15 +1,18 @@
 #include "processRequest.h"
 #include "methods/get.h"
 #include "methods/head.h"
+#include "methods/post.h"
 
 #include <string.h>
 #include <stdio.h>
 
 
-HTTP_Status processRequest(RequestLine *req , HTTP_Response *res){
+HTTP_Status processRequest(Request *req , HTTP_Response *res){
     
     if(req->method == METHOD_UNKNOWN) return STATUS_400;
     if(req->httpVersion == VERSION_UNKNOWN) return STATUS_505;
+
+    res->httpVersion = req->httpVersion;
 
     switch (req->method){
         case METHOD_GET:
@@ -19,6 +22,7 @@ HTTP_Status processRequest(RequestLine *req , HTTP_Response *res){
             return HTTPHead(req , res);
 
         case METHOD_POST:
+            return HTTPPost(req , res);
             break;
 
         case METHOD_PUT:

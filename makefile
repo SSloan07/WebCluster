@@ -5,7 +5,7 @@ SRCS = main.c \
 	HTTP/structs/request.c HTTP/structs/response.c \
 	HTTP/requestParser.c HTTP/processRequest.c \
 	HTTP/utils/readFile.c HTTP/utils/stringToEnum.c HTTP/utils/enumToString.c HTTP/utils/getDate.c\
-	HTTP/methods/get.c HTTP/methods/head.c
+	HTTP/methods/get.c HTTP/methods/head.c HTTP/methods/post.c
 
 OBJS = $(SRCS:.c=.o)
 TARGET = server

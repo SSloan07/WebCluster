@@ -4,67 +4,86 @@
 int main(){
 
     // Variables para probar
-    RequestLine *req = createRequest();
+    Request *req = createRequest();
     HTTP_Response *res = createHTTPResponse();
 
-char request[8192];  // buffer más grande para request line + headers
+char request[1048576];
 size_t len = 0;
-char line[2048];
+size_t contentLength = 0;
+char line[1024];
 
-printf("Ingresa la request:\n");
-
-    while (1) {
-        if (fgets(line, sizeof(line), stdin) == NULL) {
-            printf("Error leyendo entrada\n");
-            return -1;
-        }
-        
-        // Quitar el \n que agrega fgets
-        size_t lineLen = strlen(line);
-        if (lineLen > 0 && line[lineLen - 1] == '\n') {
-            line[lineLen - 1] = '\0';
-            lineLen--;
-        }
-        // Por si viene con \r\n (terminales Windows)
-        if (lineLen > 0 && line[lineLen - 1] == '\r') {
-            line[lineLen - 1] = '\0';
-            lineLen--;
-        }
-        
-        // Verificar que cabe en el buffer (línea + \r\n + null terminator)
-        if (len + lineLen + 3 > sizeof(request)) {
-            printf("Error: request demasiado grande\n");
-            return -1;
-        }
-        
-        // Si la línea está vacía, terminamos los headers
-        if (lineLen == 0) {
-            // Agregar el \r\n final que separa headers del body
-            memcpy(request + len, "\r\n", 2);
-            len += 2;
-            request[len] = '\0';
-            break;
-        }
-        
-        // Copiar la línea + \r\n al buffer principal
-        memcpy(request + len, line, lineLen);
-        len += lineLen;
+while (1) {
+    if (fgets(line, sizeof(line), stdin) == NULL) {
+        break;  
+    }
+    
+    
+    size_t lineLen = strlen(line);
+    if (lineLen > 0 && line[lineLen - 1] == '\n') {
+        line[lineLen - 1] = '\0';
+        lineLen--;
+    }
+    if (lineLen > 0 && line[lineLen - 1] == '\r') {
+        line[lineLen - 1] = '\0';
+        lineLen--;
+    }
+    
+    
+    if (len + lineLen + 3 > sizeof(request)) {
+        printf("Error: request excede el buffer\n");
+        return -1;
+    }
+    
+    
+    if (strncasecmp(line, "Content-Length:", 15) == 0) {
+        const char *value = line + 15;
+        while (*value == ' ' || *value == '\t') value++;
+        contentLength = (size_t)strtoul(value, NULL, 10);
+    }
+    
+    
+    if (lineLen == 0) {
         memcpy(request + len, "\r\n", 2);
         len += 2;
-        request[len] = '\0';
+        
+        
+        if (contentLength > 0) {
+            if (len + contentLength > sizeof(request)) {
+                printf("Error: body excede el buffer\n");
+                return -1;
+            }
+            
+            size_t totalRead = 0;
+            while (totalRead < contentLength) {
+                size_t bytesRead = fread(request + len + totalRead, 1,
+                                         contentLength - totalRead, stdin);
+                if (bytesRead == 0) {
+                    
+                    break;
+                }
+                totalRead += bytesRead;
+            }
+            len += totalRead;  
+        }
+        break;
     }
-
+    
+    
+    memcpy(request + len, line, lineLen);
+    len += lineLen;
+    memcpy(request + len, "\r\n", 2);
+    len += 2;
+}
     // ---------------------------------
 
-    size_t position;
+    size_t position = 0;
     int parseReqLine = parseRequestLine(request, len, req , &position);
 
     // Si esto pasa, fue una bad request
     if(parseReqLine == -1){
-        printf("Pailas, se nos jodio el parser\n");
+        printf("Pailas, se nos jodio el parser del req line\n");
         res->status = STATUS_400;
 
-        printRequest(req);
         printResponse(res);
 
         freeResponse(res);
@@ -75,7 +94,7 @@ printf("Ingresa la request:\n");
     int parseHead = parseHeaders(request, len, req , &position);
 
     if(parseHead == -1){
-        printf("Pailas, se nos jodio el parser\n");
+        printf("Pailas, se nos jodio el parser del header\n");
         res->status = STATUS_400;
 
         printResponse(res);
@@ -83,6 +102,23 @@ printf("Ingresa la request:\n");
         freeResponse(res);
         freeRequest(req);
         return 0;
+    }
+
+    if(req->method == METHOD_POST) {
+
+        int parseBod = parseBody(request , len , req , &position);
+
+        if(parseBod == -1){
+            printf("Pailas, se nos jodio el parser del body\n");
+            res->status = STATUS_400;
+
+            printResponse(res);
+
+            freeResponse(res);
+            freeRequest(req);
+            return 0;
+        }
+
     }
 
     res->status = processRequest(req , res);

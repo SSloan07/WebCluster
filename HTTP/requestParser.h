@@ -7,7 +7,8 @@
 #include <string.h>
 #include <stdio.h>
 
-int parseRequestLine (const char *rawRequestLine, size_t rawLength, RequestLine *req , size_t *position);
-int parseHeaders(const char *rawRequestLine, size_t rawLength, RequestLine *req , size_t *position);
+int parseRequestLine (const char *rawRequestLine, size_t rawLength, Request *req , size_t *position);
+int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req , size_t *position);
+int parseBody(const char *rawRequest, size_t rawLength , Request *req , size_t *position);
 
 #endif

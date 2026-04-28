@@ -19,6 +19,8 @@ typedef enum {
 
 typedef enum {
     HEADER_HOST,
+    HEADER_CONTENT_TYPE,
+    HEADER_CONTENT_LENGTH,
     HEADER_UNKNOWN,
 } Request_Header_Name;
 
@@ -29,7 +31,7 @@ typedef enum {
 } HTTP_Version;
 
 typedef struct {
-    char *name;
+    Request_Header_Name name;
     char *value;
 } Request_Header;
 
@@ -43,13 +45,16 @@ typedef struct {
     HTTP_Method method;
     char *requestURI;
     HTTP_Version httpVersion;
-} RequestLine;
+    char *body;
+    size_t bodyLength;
+} Request;
 
-void printRequest(RequestLine *req);
-RequestLine *createRequest();
-void freeRequest (RequestLine *req);
+void printRequest(Request *req);
+Request *createRequest();
+void freeRequest (Request *req);
 Request_HeaderList *createRequestHeaderList();
-int addRequestHeader(Request_HeaderList *list , const char *name , const char *value);
+int addRequestHeader(Request_HeaderList *list , Request_Header_Name name , const char *value);
 void freeRequestHeaderList(Request_HeaderList *list);
+Request_Header *searchHeader(Request_HeaderList *headerList , Request_Header_Name requestHeader);
 
 #endif

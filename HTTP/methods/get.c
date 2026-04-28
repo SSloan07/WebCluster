@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-HTTP_Status HTTPGet(RequestLine *req , HTTP_Response *res){
+HTTP_Status HTTPGet(Request *req , HTTP_Response *res){
 
     // Sacar la ruta por defecto (/index.html)
     if(strcmp(req->requestURI , "/") == 0){

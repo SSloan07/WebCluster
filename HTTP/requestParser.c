@@ -1,13 +1,16 @@
 #include "requestParser.h"
 #include "utils/stringToEnum.h"
+#include "utils/enumToString.h"
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
+
 
 #define MAX_URI_LENGTH 2048
 
-int parseRequestLine(const char *rawRequestLine , size_t rawLength, RequestLine *req , size_t *position){
+int parseRequestLine(const char *rawRequestLine , size_t rawLength, Request *req , size_t *position){
 
     int count = 0;
     size_t lastLetter = 0;
@@ -59,8 +62,7 @@ int parseRequestLine(const char *rawRequestLine , size_t rawLength, RequestLine 
             tempVersion[length] = '\0';
             req->httpVersion = getHTTPVersion(tempVersion);
             
-            lastLetter = i+2;
-            *position = lastLetter;
+            *position = i + 2;
             count++;
         }
     }
@@ -73,53 +75,91 @@ int parseRequestLine(const char *rawRequestLine , size_t rawLength, RequestLine 
     return 0;
 }
 
-int parseHeaders(const char *rawRequestLine , size_t rawLength, RequestLine *req , size_t *position){
+int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req, size_t *position) {
 
     size_t lastLetter = *position;
-    int value = 0; // Variable que va a controlar si estamos leyendo el value de un header o un name
+    int value = 0;
 
     char tempHeader[16];
+    Request_Header_Name reqHeader;
 
-    // Empezamos en la posicion que termino el otro parser
-    for(size_t i = *position ; i < rawLength ; i++){
-        
-        if(rawRequestLine[i] == ':' && value == 0){
+    int foundEnd = 0;  
 
-            if(i + 1 >= rawLength || rawRequestLine[i + 1] != ' ') return -1;
+    for (size_t i = *position; i < rawLength; i++) {
+
+        if (rawRequestLine[i] == ':' && value == 0) {
+            if (i + 1 >= rawLength || rawRequestLine[i + 1] != ' ') return -1;
 
             size_t length = i - lastLetter;
+            if (length >= sizeof(tempHeader) || length == 0) return -1;
 
-            if(length >= sizeof(tempHeader) || length == 0) return -1;
-
-            memcpy(tempHeader, rawRequestLine + lastLetter , length);
+            memcpy(tempHeader, rawRequestLine + lastLetter, length);
             tempHeader[length] = '\0';
-            Request_Header_Name reqHeader = getRequestHeader(tempHeader);
-            
-            if(reqHeader == HEADER_UNKNOWN) return -1;
+            reqHeader = getRequestHeader(tempHeader);
 
-            lastLetter = i+2;
+            if (reqHeader == HEADER_UNKNOWN) return -1;
+
+            lastLetter = i + 2;
             value = 1;
         }
 
-        if(rawRequestLine[i] == '\r' && value == 1) {
-            
-            if(i + 1 >= rawLength || rawRequestLine[i + 1] != '\n') return -1;
+        if (rawRequestLine[i] == '\r' && value == 1) {
+            if (i + 1 >= rawLength || rawRequestLine[i + 1] != '\n') return -1;
 
             size_t length = i - lastLetter;
             char tempValue[128];
 
-            if(length >= sizeof(tempValue) || length == 0) return -1;
+            if (length >= sizeof(tempValue) || length == 0) return -1;
 
-            memcpy(tempValue, rawRequestLine + lastLetter , length);
+            memcpy(tempValue, rawRequestLine + lastLetter, length);
             tempValue[length] = '\0';
-            
-            addRequestHeader(req->headerList , tempHeader , tempValue);
-            
-            lastLetter = i+2;
+
+            addRequestHeader(req->headerList, reqHeader, tempValue);
+
+            lastLetter = i + 2;
             value = 0;
+
+            if (i + 3 < rawLength && rawRequestLine[i + 2] == '\r' && rawRequestLine[i + 3] == '\n') {
+                *position = i + 4;
+                foundEnd = 1;
+                break;
+            }
         }
-        
     }
+
+    if (!foundEnd) return -1;
+
+    return 0;
+}
+
+int parseBody(const char *rawRequest, size_t rawLength , Request *req , size_t *position) {
+
+    if(req->method != METHOD_POST) return -1; // Body en get o en head, esta mal
+
+    if(*position >= rawLength) return -1; // No hay body
+
+    Request_Header *headerLength = searchHeader(req->headerList , HEADER_CONTENT_LENGTH);
+
+    if(headerLength == NULL) return -1; // No existe el header
+    
+    // Pasar de char a size_t para saber que tanto debemos leer
+    char *end;
+    errno = 0; // Buena practica
+
+    unsigned long value = strtoul(headerLength->value , &end , 10);
+
+    if(end == headerLength->value) return -1; // Si ambos apuntan a la misma direccion, no se trasnformo nada
+    if(errno != 0) return -1;
+
+    size_t bodyLength = (size_t)value;
+    // -----------------------------
+
+    if(bodyLength == 0) return 0;
+    if( (rawLength - *position) < bodyLength) return -1; // El content length lo mandaron mal
+
+    req->body = malloc(bodyLength);
+    memcpy(req->body , rawRequest + *position, bodyLength);
+    req->bodyLength = bodyLength;
 
     return 0;
 }
