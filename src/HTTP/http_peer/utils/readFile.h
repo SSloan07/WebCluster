@@ -5,6 +5,5 @@
 
 char *readFile(const char *filePath , size_t *outSize);
 const char *getContentType(const char *filePath);
-int fileExist(const char *filePath);
 
 #endif

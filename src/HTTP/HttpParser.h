@@ -26,6 +26,8 @@ const char *http_response_get_header(
     const char *key
 );
 
+HTTP_Status processRequest(Request *req , HTTP_Response *res );
+
 int http_request_is_method_supported(const http_request_t *request);
 
 int http_request_is_cacheable(const http_request_t *request);

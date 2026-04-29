@@ -74,6 +74,7 @@ void *manage_client(void *arg) {
         printf(CYAN "[HTTP] Version: %s\n" RESET, request.http_version);
 
         const char *host = http_request_get_header(&request, "Host");
+        
         if (host != NULL) {
             printf(CYAN "[HTTP] Host: %s\n" RESET, host);
         }

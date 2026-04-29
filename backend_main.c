@@ -1,5 +1,6 @@
 #include "src/Network/socket.h"
 #include "src/Network/tcp.h"
+#include "src/HTTP/HttpParser.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -195,101 +196,32 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
+        http_parse_request_t request; //Parseo correctamente la petición HTTP
+        http_parse_result_t parse_result = http_parse_request(buffer, (size_t)n, &request);
+
+        if(parse_result != HTTP_PARSE_OK) {
+            printf(RED "[HTTP] Error al parsear la petición HTTP.\n" RESET);
+        }
+
+        int suported = http_request_is_method_supported(&request);
+        if(!suported) {
+            printf(RED "[HTTP] Método no soportado por el proyecto.\n" RESET);
+        }
+
+        
+
+
+
+
+
+
         buffer[n] = '\0';
 
         printf("[%s] Recibidos %zd bytes:\n%s\n", backend_name, n, buffer);
 
-        char method[16] = {0};
-        char uri[1024] = {0};
-        char version[16] = {0};
 
-        if (sscanf(buffer, "%15s %1023s %15s", method, uri, version) != 3) {
-            printf("[%s] Request mal formada -> 400\n", backend_name);
 
-            send_text_response(
-                client_sock->fd,
-                400,
-                "Bad Request",
-                "400 Bad Request\n",
-                1
-            );
-
-            tcp_close(client_sock);
-            continue;
-        }
-
-        printf("[%s] Metodo: %s | URI: %s | Version: %s\n",
-               backend_name, method, uri, version);
-
-        if (strcmp(version, "HTTP/1.1") != 0) {
-            send_text_response(
-                client_sock->fd,
-                400,
-                "Bad Request",
-                "400 Bad Request - HTTP Version not supported\n",
-                1
-            );
-
-            tcp_close(client_sock);
-            continue;
-        }
-
-        if (strcmp(method, "GET") != 0 &&
-            strcmp(method, "HEAD") != 0 &&
-            strcmp(method, "POST") != 0) {
-            send_text_response(
-                client_sock->fd,
-                400,
-                "Bad Request",
-                "400 Bad Request - Unsupported Method\n",
-                1
-            );
-
-            tcp_close(client_sock);
-            continue;
-        }
-
-        if (strcmp(method, "POST") == 0) {
-            /* paso intermedio: POST mínimo */
-            const char *body_start = find_body(buffer);
-
-            char response_body[BUFFER_SIZE];
-            if (body_start != NULL && *body_start != '\0') {
-                snprintf(response_body, sizeof(response_body),
-                         "POST recibido por %s en puerto %d\nCuerpo:\n%s\n",
-                         backend_name, port, body_start);
-            } else {
-                snprintf(response_body, sizeof(response_body),
-                         "POST recibido por %s en puerto %d\nSin cuerpo o cuerpo vacio\n",
-                         backend_name, port);
-            }
-
-            send_text_response(
-                client_sock->fd,
-                200,
-                "OK",
-                response_body,
-                1
-            );
-
-            tcp_close(client_sock);
-            continue;
-        }
-
-        /* GET / HEAD */
-        char filepath[2048];
-        if (build_safe_path(document_root, uri, filepath, sizeof(filepath)) != 0) {
-            send_text_response(
-                client_sock->fd,
-                400,
-                "Bad Request",
-                "400 Bad Request - Invalid Path\n",
-                strcmp(method, "HEAD") == 0 ? 0 : 1
-            );
-
-            tcp_close(client_sock);
-            continue;
-        }
+        
 
         struct stat st;
         if (stat(filepath, &st) != 0 || !S_ISREG(st.st_mode)) {
