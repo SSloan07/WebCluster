@@ -3,6 +3,10 @@
 
 #include <stddef.h>
 
+// Incluir estructuras del compañero (Request, Response, etc.)
+#include "structs/request.h"
+#include "structs/response.h"
+
 #define HTTP_METHOD_MAX        16
 #define HTTP_URI_MAX         1024
 #define HTTP_VERSION_MAX       16

@@ -1,10 +1,10 @@
 #include "HttpParser.h"
-#include "HttpParser.h"
+#include "HttpTypes.h"
 #include "http_peer/requestParser.h"
 #include "http_peer/utils/enumToString.h"
-#include "http_peer/structs/Request.h"
 #include <string.h>
 #include <stdlib.h>
+#include <strings.h>
 /*
  * Aquí se adapta el parser del compañero a la interfaz del proyecto.
  * Las firmas NO cambian.
