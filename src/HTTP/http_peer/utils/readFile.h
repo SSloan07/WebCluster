@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 
+void setDocumentRoot(const char *rootPath);
 char *readFile(const char *filePath , size_t *outSize);
 const char *getContentType(const char *filePath);
 

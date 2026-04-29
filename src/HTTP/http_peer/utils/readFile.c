@@ -1,13 +1,24 @@
 #include "readFile.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-char *BASE_PATH = "/home/alejo/Universidad/Telematica/WebCluster";
+static const char *basePath = ".";
+
+void setDocumentRoot(const char *rootPath) {
+    if (rootPath != NULL && rootPath[0] != '\0') {
+        basePath = rootPath;
+    }
+}
 
 char *readFile(const char *filePath , size_t *outSize){
 
-    char fullpath[256];
-    snprintf(fullpath, sizeof(fullpath), "%s%s", BASE_PATH, filePath);
+    char fullpath[512];
+    int written = snprintf(fullpath, sizeof(fullpath), "%s%s", basePath, filePath);
+    if (written < 0 || written >= (int)sizeof(fullpath)) {
+        *outSize = 0;
+        return NULL;
+    }
 
     FILE *file = fopen(fullpath , "rb"); // Leemos un binario
 
@@ -27,7 +38,13 @@ char *readFile(const char *filePath , size_t *outSize){
         return NULL;
     }
 
-    char *content = malloc(size);
+    char *content = malloc((size_t)size);
+    if (content == NULL) {
+        fclose(file);
+        *outSize = 0;
+        return NULL;
+    }
+
     size_t bytesRead = fread(content, 1, size, file);
     fclose(file);
 

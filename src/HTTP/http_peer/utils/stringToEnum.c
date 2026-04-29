@@ -1,7 +1,6 @@
 #include "stringToEnum.h"
 
 #include <string.h>
-#include <strings.h>
 
 HTTP_Method getHTTPMethod(const char *strMethod){
 
@@ -26,9 +25,11 @@ HTTP_Version getHTTPVersion(const char *strVersion){
 
 Request_Header_Name getRequestHeader(const char *strHeader){
     
-    if(strcasecmp(strHeader , "Host") == 0) return HEADER_HOST; // Ignorar las mayusculas
-    if(strcmp(strHeader , "Content-Type") == 0) return HEADER_CONTENT_TYPE;
-    if(strcmp(strHeader , "Content-Length") == 0) return HEADER_CONTENT_LENGTH;
+    if(strcasecmp(strHeader , "Host") == 0) return HEADER_HOST; 
+    if(strcasecmp(strHeader , "Content-Type") == 0) return HEADER_CONTENT_TYPE;
+    if(strcasecmp(strHeader , "Content-Length") == 0) return HEADER_CONTENT_LENGTH;
+    if(strcasecmp(strHeader , "User-Agent") == 0) return HEADER_USER_AGENT;
+    if(strcasecmp(strHeader , "Accept") == 0) return HEADER_ACCEPT;
 
     return HEADER_UNKNOWN;
 }

@@ -1,44 +1,51 @@
 #ifndef HTTP_PARSER_H
 #define HTTP_PARSER_H
 
-#include "HttpTypes.h"
 #include <stddef.h>
+#include "structs/request.h"
+#include "structs/response.h"
+
+typedef enum {
+    HTTP_PARSE_OK = 0,
+    HTTP_PARSE_INCOMPLETE = 1,
+    HTTP_PARSE_ERROR = -1
+} http_parse_result_t;
 
 http_parse_result_t http_parse_request(
     const char *buffer,
     size_t len,
-    http_request_t *request
+    Request *request
 );
 
 http_parse_result_t http_parse_response(
     const char *buffer,
     size_t len,
-    http_response_t *response
+    HTTP_Response *response
 );
 
 const char *http_request_get_header(
-    const http_request_t *request,
+    const Request *request,
     const char *key
 );
 
 const char *http_response_get_header(
-    const http_response_t *response,
+    const HTTP_Response *response,
     const char *key
 );
 
-HTTP_Status processRequest(Request *req , HTTP_Response *res );
+HTTP_Status processRequest(Request *req, HTTP_Response *res);
 
-int http_request_is_method_supported(const http_request_t *request);
+int http_request_is_method_supported(const Request *request);
 
-int http_request_is_cacheable(const http_request_t *request);
+int http_request_is_cacheable(const Request *request);
 
 int http_build_cache_key(
-    const http_request_t *request,
+    const Request *request,
     char *out,
     size_t out_size
 );
 
-void http_request_free(http_request_t *request);
-void http_response_free(http_response_t *response);
+void http_request_free(Request *request);
+void http_response_free(HTTP_Response *response);
 
 #endif

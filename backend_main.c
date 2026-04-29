@@ -1,61 +1,19 @@
 #include "src/Network/socket.h"
 #include "src/Network/tcp.h"
 #include "src/HTTP/HttpParser.h"
+#include "src/HTTP/http_peer/utils/enumToString.h"
+#include "src/HTTP/http_peer/utils/readFile.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/stat.h>
 
 #define BACKLOG 10
 #define BUFFER_SIZE 8192
-#define FILE_CHUNK_SIZE 4096
 
-static const char *get_mime_type(const char *path) {
-    const char *ext = strrchr(path, '.');
-    if (ext == NULL) return "application/octet-stream";
-
-    if (strcmp(ext, ".html") == 0 || strcmp(ext, ".htm") == 0) return "text/html";
-    if (strcmp(ext, ".css") == 0) return "text/css";
-    if (strcmp(ext, ".js") == 0) return "application/javascript";
-    if (strcmp(ext, ".txt") == 0) return "text/plain";
-    if (strcmp(ext, ".png") == 0) return "image/png";
-    if (strcmp(ext, ".jpg") == 0 || strcmp(ext, ".jpeg") == 0) return "image/jpeg";
-    if (strcmp(ext, ".gif") == 0) return "image/gif";
-
-    return "application/octet-stream";
-}
-
-static int send_headers(
-    int fd,
-    int status_code,
-    const char *reason_phrase,
-    const char *content_type,
-    size_t content_length
-) {
-    char headers[1024];
-
-    int header_len = snprintf(
-        headers,
-        sizeof(headers),
-        "HTTP/1.1 %d %s\r\n"
-        "Content-Length: %zu\r\n"
-        "Content-Type: %s\r\n"
-        "Connection: close\r\n"
-        "\r\n",
-        status_code,
-        reason_phrase,
-        content_length,
-        content_type
-    );
-
-    if (header_len < 0 || header_len >= (int)sizeof(headers)) {
-        return -1;
-    }
-
-    return (tcp_send_all(fd, headers, (size_t)header_len) < 0) ? -1 : 0;
-}
+#define RED   "\033[31m"
+#define RESET "\033[0m"
 
 static int send_text_response(
     int fd,
@@ -64,18 +22,87 @@ static int send_text_response(
     const char *body,
     int send_body
 ) {
-    if (body == NULL) {
-        body = "";
-    }
+    char headers[1024];
+    size_t body_len = (body == NULL) ? 0 : strlen(body);
 
-    size_t body_len = strlen(body);
-
-    if (send_headers(fd, status_code, reason_phrase, "text/plain", body_len) < 0) {
+    int header_len = snprintf(
+        headers,
+        sizeof(headers),
+        "HTTP/1.1 %d %s\r\n"
+        "Content-Length: %zu\r\n"
+        "Content-Type: text/plain\r\n"
+        "Connection: close\r\n"
+        "\r\n",
+        status_code,
+        reason_phrase,
+        body_len
+    );
+    if (header_len < 0 || header_len >= (int)sizeof(headers)) {
         return -1;
     }
 
-    if (send_body && body_len > 0) {
-        if (tcp_send_all(fd, body, body_len) < 0) {
+    if (tcp_send_all(fd, headers, (size_t)header_len) < 0) {
+        return -1;
+    }
+
+    if (send_body && body_len > 0 && tcp_send_all(fd, body, body_len) < 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
+static int send_http_response(int fd, const HTTP_Response *response, int send_body) {
+    char header_buffer[8192];
+    size_t offset = 0;
+
+    if (response == NULL || response->headerList == NULL) {
+        return -1;
+    }
+    // Se pasa a string el status y version para construir la respuesta HTTP
+    const char *version = versionToString(response->httpVersion);
+    const char *status_code = statusToString(response->status);
+    const char *reason_phrase = statusToReasonPhrase(response->status);
+    // Se asegura que la respuesta de error tenga un body y los headers necesarios
+    int written = snprintf(
+        header_buffer + offset,
+        sizeof(header_buffer) - offset,
+        "%s %s %s\r\n",
+        version,
+        status_code,
+        reason_phrase
+    );
+    if (written < 0 || (size_t)written >= sizeof(header_buffer) - offset) {
+        return -1;
+    }
+    offset += (size_t)written;
+
+    for (size_t i = 0; i < response->headerList->count; i++) {
+        written = snprintf(
+            header_buffer + offset,
+            sizeof(header_buffer) - offset,
+            "%s: %s\r\n",
+            response->headerList->headers[i].name,
+            response->headerList->headers[i].value
+        );
+        if (written < 0 || (size_t)written >= sizeof(header_buffer) - offset) {
+            return -1;
+        }
+        offset += (size_t)written;
+    }
+
+    written = snprintf(header_buffer + offset, sizeof(header_buffer) - offset, "Connection: close\r\n\r\n");
+    if (written < 0 || (size_t)written >= sizeof(header_buffer) - offset) {
+        return -1;
+    }
+    offset += (size_t)written;
+
+    if (tcp_send_all(fd, header_buffer, offset) < 0) {
+        return -1;
+    }
+
+    if (send_body && response->content != NULL && response->contentLength > 0) {
+        if (tcp_send_all(fd, response->content, response->contentLength) < 0) {
             return -1;
         }
     }
@@ -83,68 +110,34 @@ static int send_text_response(
     return 0;
 }
 
-static int send_file_response(
-    int fd,
-    int status_code,
-    const char *reason_phrase,
-    const char *content_type,
-    const char *filepath,
-    size_t file_size,
-    int send_body
-) {
-    if (send_headers(fd, status_code, reason_phrase, content_type, file_size) < 0) {
-        return -1;
+static void ensure_error_response(HTTP_Response *response) {
+    if (response == NULL || response->headerList == NULL) {
+        return;
     }
 
-    if (!send_body) {
-        return 0;
+    if (response->status == STATUS_200 || response->status == STATUS_201) {
+        return;
     }
 
-    FILE *fp = fopen(filepath, "rb");
-    if (fp == NULL) {
-        return -1;
-    }
-
-    unsigned char chunk[FILE_CHUNK_SIZE];
-    size_t bytes_read;
-
-    while ((bytes_read = fread(chunk, 1, sizeof(chunk), fp)) > 0) {
-        if (tcp_send_all(fd, chunk, bytes_read) < 0) {
-            fclose(fp);
-            return -1;
+    if (response->content == NULL) {
+        const char *reason_phrase = statusToReasonPhrase(response->status);
+        size_t body_size = strlen(reason_phrase) + 3;
+        response->content = malloc(body_size);
+        if (response->content != NULL) {
+            snprintf(response->content, body_size, "%s\n", reason_phrase);
+            response->contentLength = strlen(response->content);
         }
     }
 
-    fclose(fp);
-    return 0;
-}
-
-static const char *find_body(const char *request) {
-    const char *body = strstr(request, "\r\n\r\n");
-    if (body == NULL) return NULL;
-    return body + 4;
-}
-
-static int build_safe_path(
-    const char *document_root,
-    const char *uri,
-    char *out_path,
-    size_t out_size
-) {
-    if (document_root == NULL || uri == NULL || out_path == NULL || out_size == 0) {
-        return -1;
+    if (http_response_get_header(response, "Content-Type") == NULL) {
+        addResponseHeader(response->headerList, "Content-Type", "text/plain");
     }
 
-    /* bloqueo mínimo contra path traversal */
-    if (strstr(uri, "..") != NULL) {
-        return -1;
+    if (http_response_get_header(response, "Content-Length") == NULL) {
+        char content_length[32];
+        snprintf(content_length, sizeof(content_length), "%zu", response->contentLength);
+        addResponseHeader(response->headerList, "Content-Length", content_length);
     }
-
-    if (strcmp(uri, "/") == 0) {
-        return snprintf(out_path, out_size, "%s/index.html", document_root) < (int)out_size ? 0 : -1;
-    }
-
-    return snprintf(out_path, out_size, "%s%s", document_root, uri) < (int)out_size ? 0 : -1;
 }
 
 int main(int argc, char *argv[]) {
@@ -161,6 +154,7 @@ int main(int argc, char *argv[]) {
 
     const char *document_root = argv[2];
     const char *backend_name = (argc >= 4) ? argv[3] : "backend";
+    setDocumentRoot(document_root);
 
     printf("=== Iniciando %s en puerto %d ===\n", backend_name, port);
     printf("[%s] DocumentRoot: %s\n", backend_name, document_root);
@@ -196,64 +190,65 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        http_parse_request_t request; //Parseo correctamente la petición HTTP
+        Request request = {0};
         http_parse_result_t parse_result = http_parse_request(buffer, (size_t)n, &request);
 
-        if(parse_result != HTTP_PARSE_OK) {
+        if (parse_result != HTTP_PARSE_OK) {
             printf(RED "[HTTP] Error al parsear la petición HTTP.\n" RESET);
-        }
-
-        int suported = http_request_is_method_supported(&request);
-        if(!suported) {
-            printf(RED "[HTTP] Método no soportado por el proyecto.\n" RESET);
-        }
-
-        
-
-
-
-
-
-
-        buffer[n] = '\0';
-
-        printf("[%s] Recibidos %zd bytes:\n%s\n", backend_name, n, buffer);
-
-
-
-        
-
-        struct stat st;
-        if (stat(filepath, &st) != 0 || !S_ISREG(st.st_mode)) {
-            send_text_response(
-                client_sock->fd,
-                404,
-                "Not Found",
-                "404 Page/File Not Found\n",
-                strcmp(method, "HEAD") == 0 ? 0 : 1
-            );
-
+            send_text_response(client_sock->fd, 400, "Bad Request", "400 Bad Request\n", 1);
             tcp_close(client_sock);
             continue;
         }
 
-        const char *content_type = get_mime_type(filepath);
-        int send_body = (strcmp(method, "HEAD") == 0) ? 0 : 1;
+        printf("[%s] Método: %s | URI: %s | Versión: %s\n",
+               backend_name,
+               methodToString(request.method),
+               request.requestURI,
+               versionToString(request.httpVersion));
 
-        if (send_file_response(
-                client_sock->fd,
-                200,
-                "OK",
-                content_type,
-                filepath,
-                (size_t)st.st_size,
-                send_body
-            ) < 0) {
-            printf("[%s][ERROR] No se pudo enviar el archivo: %s\n", backend_name, filepath);
-        } else {
-            printf("[%s] Recurso servido correctamente: %s\n", backend_name, filepath);
+        if (!http_request_is_method_supported(&request)) {
+            printf(RED "[HTTP] Método no soportado por el proyecto.\n" RESET);
+            send_text_response(client_sock->fd, 405, "Method Not Allowed", "405 Method Not Allowed\n", 1);
+            http_request_free(&request);
+            tcp_close(client_sock);
+            continue;
         }
 
+        if (request.requestURI == NULL) {
+            send_text_response(client_sock->fd, 400, "Bad Request", "400 Bad Request\n", 1);
+            http_request_free(&request);
+            tcp_close(client_sock);
+            continue;
+        }
+
+        if (strstr(request.requestURI, "..") != NULL) {
+            send_text_response(client_sock->fd, 400, "Bad Request", "400 Bad Request\n", 1);
+            http_request_free(&request);
+            tcp_close(client_sock);
+            continue;
+        }
+
+        HTTP_Response response = {0};
+        response.headerList = createResponseHeaderList();
+        if (response.headerList == NULL) {
+            send_text_response(client_sock->fd, 500, "Internal Server Error", "500 Internal Server Error\n", 1);
+            http_request_free(&request);
+            tcp_close(client_sock);
+            continue;
+        }
+
+        response.status = processRequest(&request, &response);
+        ensure_error_response(&response);
+        if (send_http_response(client_sock->fd, &response, request.method != METHOD_HEAD) < 0) {
+            printf("[%s][ERROR] No se pudo enviar la respuesta HTTP.\n", backend_name);
+            http_response_free(&response);
+            http_request_free(&request);
+            tcp_close(client_sock);
+            continue;
+        }
+
+        http_response_free(&response);
+        http_request_free(&request);
         tcp_close(client_sock);
     }
 

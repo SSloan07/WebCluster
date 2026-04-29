@@ -38,6 +38,8 @@ const char *headerToString(Request_Header_Name name){
     if(name == HEADER_HOST) return "Host";
     if(name == HEADER_CONTENT_TYPE) return "Content-Type";
     if(name == HEADER_CONTENT_LENGTH) return "Content-Length";
+    if(name == HEADER_USER_AGENT) return "User-Agent";
+    if(name == HEADER_ACCEPT) return "Accept";
     return "UNKOWN HEADER";
 }
 

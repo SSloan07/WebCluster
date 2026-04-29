@@ -21,6 +21,8 @@ typedef enum {
     HEADER_HOST,
     HEADER_CONTENT_TYPE,
     HEADER_CONTENT_LENGTH,
+    HEADER_USER_AGENT,
+    HEADER_ACCEPT,
     HEADER_UNKNOWN,
 } Request_Header_Name;
 

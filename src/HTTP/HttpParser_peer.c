@@ -1,178 +1,175 @@
 #include "HttpParser.h"
-#include "HttpTypes.h"
 #include "http_peer/requestParser.h"
 #include "http_peer/utils/enumToString.h"
-#include <string.h>
+
+#include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
-/*
- * Aquí se adapta el parser del compañero a la interfaz del proyecto.
- * Las firmas NO cambian.
- */
-// Se realiza la adaptación de la función de mi compañero con el adaptador de manage_client.c
+#include <string.h>
+
+static void reset_request_state(Request *request) {
+    if (request == NULL) {
+        return;
+    }
+
+    request->headerList = NULL;
+    request->method = METHOD_NULL;
+    request->requestURI = NULL;
+    request->httpVersion = VERSION_NULL;
+    request->body = NULL;
+    request->bodyLength = 0;
+}
+
+static void reset_response_state(HTTP_Response *response) {
+    if (response == NULL) {
+        return;
+    }
+
+    response->status = STATUS_NULL;
+    response->httpVersion = VERSION_NULL;
+    response->headerList = NULL;
+    response->content = NULL;
+    response->contentLength = 0;
+}
+
 http_parse_result_t http_parse_request(
     const char *buffer,
     size_t len,
-    http_request_t *request
-
-) 
-{
-    // Utilzo el parser de mi compañero para llenar la estructura Request, luego adapto esa estructura a http_request_t para que el resto del proyecto pueda usarla sin problemas.
-
-    Request *req = createRequest(); // Defino la estructura utilizada por el parser de mi compañero
-    if (req == NULL) {
-        printf("Ni la  estructura  Request se creó bien\n");
+    Request *request
+) {
+    if (buffer == NULL || request == NULL || len == 0) {
         return HTTP_PARSE_ERROR;
     }
-    
+
+    reset_request_state(request);
+    request->headerList = createRequestHeaderList();
+    if (request->headerList == NULL) {
+        return HTTP_PARSE_ERROR;
+    }
+
     size_t position = 0;
-
-    int parseReqLine = parseRequestLine(buffer, len, req , &position);
-
-    if(parseReqLine == -1){
-        printf("Mi rey, faltaron argumentos en el request line\n");
-        freeRequest(req);
-        return HTTP_PARSE_ERROR;
-    }
-    // Se utiliza el parseo de los headers
-    int parseHead = parseHeaders(buffer, len, req , &position);
-    
-    if(parseHead == -1){
-        printf("Mi rey, faltaron argumentos en los headers\n");
-        freeRequest(req);
+    if (parseRequestLine(buffer, len, request, &position) != 0) {
+        http_request_free(request);
         return HTTP_PARSE_ERROR;
     }
 
-    if(req->method == METHOD_POST) {
-        int parseBod = parseBody(buffer , len , req , &position);
+    if (parseHeaders(buffer, len, request, &position) != 0) {
+        http_request_free(request);
+        return HTTP_PARSE_ERROR;
+    }
 
-        if(parseBod == -1){
-            printf("Mi rey, faltaron argumentos en el body\n");
-            freeRequest(req);
-            return HTTP_PARSE_ERROR;
-        }
+    if (request->method == METHOD_POST && parseBody(buffer, len, request, &position) != 0) {
+        http_request_free(request);
+        return HTTP_PARSE_ERROR;
     }
-    // Convertir la estructura de request a http_request_t
-    
-    // Convertir método: enum → string
-    const char *method_str = methodToString(req->method);
-    strncpy(request->method, method_str, HTTP_METHOD_MAX - 1);
-    request->method[HTTP_METHOD_MAX - 1] = '\0';
-    
-    // Convertir URI: copy directo (ya es string)
-    strncpy(request->request_uri, req->requestURI, HTTP_URI_MAX - 1);
-    request->request_uri[HTTP_URI_MAX - 1] = '\0';
-    
-    // Convertir versión: enum → string
-    const char *version_str = versionToString(req->httpVersion);
-    strncpy(request->http_version, version_str, HTTP_VERSION_MAX - 1);
-    request->http_version[HTTP_VERSION_MAX - 1] = '\0';
-    
-   
-    //convierto Request_HeaderList → http_header_t[]
-    
-    request->header_count = 0;
-    
-    for (size_t i = 0; i < req->headerList->count && i < HTTP_MAX_HEADERS; i++) {
-        // Obtener nombre del header desde el enum
-        const char *header_name = headerToString(req->headerList->headers[i].name);
-        
-        // Copiar nombre
-        strncpy(request->headers[i].key, header_name, HTTP_HEADER_KEY_MAX - 1);
-        request->headers[i].key[HTTP_HEADER_KEY_MAX - 1] = '\0';
-        
-        // Copiar valor
-        strncpy(request->headers[i].value, req->headerList->headers[i].value, HTTP_HEADER_VALUE_MAX - 1);
-        request->headers[i].value[HTTP_HEADER_VALUE_MAX - 1] = '\0';
-        
-        request->header_count++;
-    }
-    
-   
-    // Lo mismo con body 
-  
-    if(req->body != NULL && req->bodyLength > 0) {
-        request->body = malloc(req->bodyLength);
-        if(request->body == NULL) {
-            printf("Error: malloc para body falló\n");
-            freeRequest(req);
-            return HTTP_PARSE_ERROR;
-        }
-        memcpy(request->body, req->body, req->bodyLength);
-        request->body_length = req->bodyLength;
-    } else {
-        request->body = NULL;
-        request->body_length = 0;
-    }
-    
-    // Marcar como válido
-    request->is_valid = 1;
-    
-    // Liberar la estructura temporal de mi compañero
-    freeRequest(req);
-    
+
     return HTTP_PARSE_OK;
 }
-
 
 http_parse_result_t http_parse_response(
     const char *buffer,
     size_t len,
-    http_response_t *response
+    HTTP_Response *response
 ) {
-
-
-
+    (void)buffer;
+    (void)len;
+    reset_response_state(response);
     return HTTP_PARSE_ERROR;
 }
 
-const char *http_request_get_header(const http_request_t *request, const char *key) {
-
-    if (!request || !key) {
+const char *http_request_get_header(const Request *request, const char *key) {
+    if (request == NULL || request->headerList == NULL || key == NULL) {
         return NULL;
     }
-    
-    // Recorrer todos los headers parseados
-    for (int i = 0; i < request->header_count; i++) {
-        // strcasecmp compara ignorando mayúsculas/minúsculas
-        if (strcasecmp(request->headers[i].key, key) == 0) {
-            return request->headers[i].value;
+
+    for (size_t i = 0; i < request->headerList->count; i++) {
+        const Request_Header *header = &request->headerList->headers[i];
+        if (strcmp(headerToString(header->name), key) == 0) {
+            return header->value;
         }
     }
-    
-    return NULL;  // Header no encontrado
-}
 
-const char *http_response_get_header(const http_response_t *response, const char *key) {
     return NULL;
 }
 
-int http_request_is_method_supported(const http_request_t *request) {
-    if (!request || !request->is_valid) return 0;
+const char *http_response_get_header(const HTTP_Response *response, const char *key) {
+    if (response == NULL || response->headerList == NULL || key == NULL) {
+        return NULL;
+    }
 
-    return strcmp(request->method, "GET") == 0 ||
-           strcmp(request->method, "HEAD") == 0 ||
-           strcmp(request->method, "POST") == 0;
-    return 0;
+    for (size_t i = 0; i < response->headerList->count; i++) {
+        const Response_Header *header = &response->headerList->headers[i];
+        if (strcmp(header->name, key) == 0) {
+            return header->value;
+        }
+    }
+
+    return NULL;
 }
 
-int http_request_is_cacheable(const http_request_t *request) {
-    return 0;
+int http_request_is_method_supported(const Request *request) {
+    if (request == NULL) {
+        return 0;
+    }
+
+    return request->method == METHOD_GET ||
+           request->method == METHOD_HEAD ||
+           request->method == METHOD_POST;
 }
 
-int http_build_cache_key(const http_request_t *request, char *out, size_t out_size) {
-    return -1;
+int http_request_is_cacheable(const Request *request) {
+    if (request == NULL) {
+        return 0;
+    }
+
+    return request->method == METHOD_GET || request->method == METHOD_HEAD;
 }
 
-void http_request_free(http_request_t *request) {
-    if (!request) return;
+int http_build_cache_key(const Request *request, char *out, size_t out_size) {
+    if (request == NULL || out == NULL || out_size == 0 || request->requestURI == NULL) {
+        return -1;
+    }
+
+    const char *host = http_request_get_header(request, "Host");
+    if (host == NULL) {
+        host = "no-host";
+    }
+
+    return snprintf(out, out_size, "%s_%s", host, request->requestURI) < (int)out_size ? 0 : -1;
+}
+
+void http_request_free(Request *request) {
+    if (request == NULL) {
+        return;
+    }
+
+    free(request->requestURI);
+    request->requestURI = NULL;
+
+    if (request->headerList != NULL) {
+        freeRequestHeaderList(request->headerList);
+        request->headerList = NULL;
+    }
+
     free(request->body);
     request->body = NULL;
-    request->body_length = 0;
-    request->is_valid = 0;
-    (void)request;
+    request->bodyLength = 0;
+    request->method = METHOD_NULL;
+    request->httpVersion = VERSION_NULL;
 }
 
-void http_response_free(http_response_t *response) {
-    (void)response;
+void http_response_free(HTTP_Response *response) {
+    if (response == NULL) {
+        return;
+    }
+
+    if (response->headerList != NULL) {
+        freeResponseHeaderList(response->headerList);
+        response->headerList = NULL;
+    }
+
+    free(response->content);
+    response->content = NULL;
+    response->contentLength = 0;
+    response->status = STATUS_NULL;
+    response->httpVersion = VERSION_NULL;
 }

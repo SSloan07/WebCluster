@@ -19,6 +19,9 @@ HTTP_Status HTTPHead(Request *req , HTTP_Response *res) {
     size_t contentSize;
     char *content = readFile(req->requestURI , &contentSize);
     if(content == NULL) return STATUS_404;
+    free(content);
+    res->content = NULL;
+    res->contentLength = contentSize;
 
     // Añadir headers
     const char *date = "Date";

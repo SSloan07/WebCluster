@@ -80,7 +80,7 @@ int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req, siz
     size_t lastLetter = *position;
     int value = 0;
 
-    char tempHeader[16];
+    char tempHeader[64];
     Request_Header_Name reqHeader;
 
     int foundEnd = 0;  
@@ -107,14 +107,16 @@ int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req, siz
             if (i + 1 >= rawLength || rawRequestLine[i + 1] != '\n') return -1;
 
             size_t length = i - lastLetter;
-            char tempValue[128];
+            char tempValue[1024];
 
             if (length >= sizeof(tempValue) || length == 0) return -1;
 
             memcpy(tempValue, rawRequestLine + lastLetter, length);
             tempValue[length] = '\0';
 
-            addRequestHeader(req->headerList, reqHeader, tempValue);
+            if (reqHeader != HEADER_UNKNOWN) {
+                addRequestHeader(req->headerList, reqHeader, tempValue);
+            }
 
             lastLetter = i + 2;
             value = 0;

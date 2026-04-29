@@ -5,6 +5,7 @@
 #include "../src/Network/socket.h"
 #include "../src/Network/tcp.h"
 #include "../src/HTTP/HttpParser.h"
+#include "../src/HTTP/http_peer/utils/enumToString.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -31,7 +32,7 @@ void *manage_client(void *arg) {
     char buffer[BUFFER_SIZE];
     net_socket_t *backend_sock = NULL;
     backend_t *target_server = NULL;
-    http_request_t request = {0};
+    Request request = {0};
     http_parse_result_t parse_result = HTTP_PARSE_ERROR;
 
     pthread_mutex_lock(mutex);
@@ -68,10 +69,10 @@ void *manage_client(void *arg) {
 
     parse_result = http_parse_request(buffer, (size_t) bytes_received, &request);
 
-    if (parse_result == HTTP_PARSE_OK && request.is_valid) {
-        printf(CYAN "[HTTP] Metodo: %s\n" RESET, request.method);
-        printf(CYAN "[HTTP] URI: %s\n" RESET, request.request_uri);
-        printf(CYAN "[HTTP] Version: %s\n" RESET, request.http_version);
+    if (parse_result == HTTP_PARSE_OK) {
+        printf(CYAN "[HTTP] Metodo: %s\n" RESET, methodToString(request.method));
+        printf(CYAN "[HTTP] URI: %s\n" RESET, request.requestURI);
+        printf(CYAN "[HTTP] Version: %s\n" RESET, versionToString(request.httpVersion));
 
         const char *host = http_request_get_header(&request, "Host");
         

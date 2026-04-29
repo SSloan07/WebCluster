@@ -6,10 +6,22 @@ OBJ_NET = src/Network/tcp.o
 OBJ_PROXY = src/Proxy/Cluster.o src/Proxy/RoundRobin.o src/Proxy/Logger.o
 OBJ_MANAGE = ManageClient/manage_client.o
 OBJ_CONFIG = Configuration/config.o
-OBJ_HTTP_PROXY = src/HTTP/HttpParser_lib.o
+OBJ_HTTP_PROXY = \
+	src/HTTP/HttpParser_peer.o \
+	src/HTTP/http_peer/processRequest.o \
+	src/HTTP/http_peer/methods/get.o \
+	src/HTTP/http_peer/methods/head.o \
+	src/HTTP/http_peer/methods/post.o \
+	src/HTTP/http_peer/requestParser.o \
+	src/HTTP/http_peer/utils/readFile.o \
+	src/HTTP/http_peer/utils/getDate.o \
+	src/HTTP/http_peer/utils/stringToEnum.o \
+	src/HTTP/http_peer/utils/enumToString.o \
+	src/HTTP/structs/request.o \
+	src/HTTP/structs/response.o
 
 OBJ_HTTP_TEST = \
-	HTTP/structs/requestLine.o HTTP/structs/response.o \
+	HTTP/structs/request.o HTTP/structs/response.o \
 	HTTP/requestParser.o HTTP/processRequest.o \
 	HTTP/utils/readFile.o HTTP/utils/getEnumRequestLine.o \
 	HTTP/utils/enumToString.o HTTP/utils/getDate.o \
@@ -28,8 +40,8 @@ servidor: $(OBJ_SERV) main.c
 cliente: $(OBJ_NET) client_main.c
 	$(CC) $(CFLAGS) client_main.c $(OBJ_NET) -o cliente
 
-backend: $(OBJ_NET) backend_main.c
-	$(CC) $(CFLAGS) backend_main.c $(OBJ_NET) -o backend
+backend: $(OBJ_NET) $(OBJ_HTTP_PROXY) backend_main.c
+	$(CC) $(CFLAGS) backend_main.c $(OBJ_NET) $(OBJ_HTTP_PROXY) -o backend
 
 http_test: $(OBJ_HTTP_TEST) main_http.c
 	$(CC) $(CFLAGS) main_http.c $(OBJ_HTTP_TEST) -o http_test
