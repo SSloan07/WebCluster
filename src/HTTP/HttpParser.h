@@ -35,16 +35,6 @@ const char *http_response_get_header(
 
 HTTP_Status processRequest(Request *req, HTTP_Response *res);
 
-int http_request_is_method_supported(const Request *request);
-
-int http_request_is_cacheable(const Request *request);
-
-int http_build_cache_key(
-    const Request *request,
-    char *out,
-    size_t out_size
-);
-
 void http_request_free(Request *request);
 void http_response_free(HTTP_Response *response);
 

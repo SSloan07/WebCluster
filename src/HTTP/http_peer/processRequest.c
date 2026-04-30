@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 
-HTTP_Status processRequest(Request *req , HTTP_Response *res){
+HTTP_Status http_peer_process_request(Request *req, HTTP_Response *res) {
     
     if(req->method == METHOD_UNKNOWN) return STATUS_400;
     if(req->httpVersion == VERSION_UNKNOWN) return STATUS_505;

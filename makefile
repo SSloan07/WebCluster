@@ -7,6 +7,7 @@ OBJ_PROXY = src/Proxy/Cluster.o src/Proxy/RoundRobin.o src/Proxy/Logger.o
 OBJ_MANAGE = ManageClient/manage_client.o
 OBJ_CONFIG = Configuration/config.o
 OBJ_HTTP_PROXY = \
+	src/HTTP/HttpParser.o \
 	src/HTTP/HttpParser_peer.o \
 	src/HTTP/http_peer/processRequest.o \
 	src/HTTP/http_peer/methods/get.o \

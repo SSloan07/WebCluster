@@ -4,6 +4,6 @@
 #include "structs/response.h"
 #include "structs/request.h"
 
-HTTP_Status processRequest(Request *req , HTTP_Response *res );
+HTTP_Status http_peer_process_request(Request *req, HTTP_Response *res);
 
 #endif

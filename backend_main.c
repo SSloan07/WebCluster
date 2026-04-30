@@ -2,7 +2,6 @@
 #include "src/Network/tcp.h"
 #include "src/HTTP/HttpParser.h"
 #include "src/HTTP/http_peer/utils/enumToString.h"
-#include "src/HTTP/http_peer/utils/readFile.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -155,7 +154,7 @@ int main(int argc, char *argv[]) {
 
     const char *document_root = argv[2];
     const char *backend_name = (argc >= 4) ? argv[3] : "backend";
-    setDocumentRoot(document_root);
+    http_set_document_root(document_root);
 
     printf("=== Iniciando %s en puerto %d ===\n", backend_name, port);
     printf("[%s] DocumentRoot: %s\n", backend_name, document_root);

@@ -116,27 +116,6 @@ int http_request_is_method_supported(const Request *request) {
            request->method == METHOD_POST;
 }
 
-int http_request_is_cacheable(const Request *request) {
-    if (request == NULL) {
-        return 0;
-    }
-
-    return request->method == METHOD_GET || request->method == METHOD_HEAD;
-}
-
-int http_build_cache_key(const Request *request, char *out, size_t out_size) {
-    if (request == NULL || out == NULL || out_size == 0 || request->requestURI == NULL) {
-        return -1;
-    }
-
-    const char *host = http_request_get_header(request, "Host");
-    if (host == NULL) {
-        host = "no-host";
-    }
-
-    return snprintf(out, out_size, "%s_%s", host, request->requestURI) < (int)out_size ? 0 : -1;
-}
-
 void http_request_free(Request *request) {
     if (request == NULL) {
         return;
