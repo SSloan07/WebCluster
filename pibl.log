@@ -1481,3 +1481,73 @@ M\xAE\xB0\xD5\xDC_\xE1\xB2&\x93oUa\x91\x92MZ\x1A\xAB\x19\xD3\xFB\x0F\x10\x09@,\x
 [2026-04-17 19:54:54] [INFO] Comunicación completada correctamente
 [2026-04-29 17:16:38] [INFO] PIBL iniciado correctamente
 [2026-04-29 17:16:38] [INFO] Archivo de configuración cargado correctamente
+[2026-04-29 17:27:16] [INFO] PIBL iniciado correctamente
+[2026-04-29 17:27:16] [INFO] Archivo de configuración cargado correctamente
+
+[2026-04-29 17:28:26] ===== REQUEST =====
+Cliente: 127.0.0.1:39262
+Backend: 127.0.0.1:5001
+Contenido:
+GET / HTTP/1.1\r\n
+User-Agent: Mozilla/5.0 (Windows NT; Windows NT 10.0; es-CO) WindowsPowerShell/5.1.26100.8115\r\n
+Host: localhost:8080\r\n
+Connection: Keep-Alive\r\n
+\r\n
+
+=======================
+
+[2026-04-29 17:28:26] ===== RESPONSE =====
+Cliente: 127.0.0.1:39262
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 400 Bad Request\r\n
+Content-Length: 16\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-04-29 17:28:26] ===== RESPONSE =====
+Cliente: 127.0.0.1:39262
+Backend: 127.0.0.1:5001
+Contenido:
+400 Bad Request\n
+
+========================
+[2026-04-29 17:28:26] [INFO] Comunicación completada correctamente
+
+[2026-04-29 17:35:37] ===== REQUEST =====
+Cliente: 127.0.0.1:52136
+Backend: 127.0.0.1:5002
+Contenido:
+GET / HTTP/1.1\r\n
+Host: localhost:8080\r\n
+User-Agent: curl/8.18.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-04-29 17:35:37] ===== RESPONSE =====
+Cliente: 127.0.0.1:52136
+Backend: 127.0.0.1:5002
+Contenido:
+HTTP/1.1 200 OK\r\n
+Date: Wed, 29 Apr 2026 22:35:37 GMT\r\n
+Content-Length: 55\r\n
+Content-Type: text/html\r\n
+Server: El server de los mas papus\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-04-29 17:35:37] ===== RESPONSE =====
+Cliente: 127.0.0.1:52136
+Backend: 127.0.0.1:5002
+Contenido:
+<h1>Hello from WebCluster backend, this is a test</h1>\n
+
+========================
+[2026-04-29 17:35:37] [INFO] Comunicación completada correctamente

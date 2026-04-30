@@ -14,7 +14,7 @@
 
 #define RED   "\033[31m"
 #define RESET "\033[0m"
-
+// Mandar respuesta de error al cliente
 static int send_text_response(
     int fd,
     int status_code,
@@ -63,12 +63,13 @@ static int send_http_response(int fd, const HTTP_Response *response, int send_bo
     const char *version = versionToString(response->httpVersion);
     const char *status_code = statusToString(response->status);
     const char *reason_phrase = statusToReasonPhrase(response->status);
-    // Se asegura que la respuesta de error tenga un body y los headers necesarios
+    // Escibir la línea de estado y los headers
+    // 
     int written = snprintf(
-        header_buffer + offset,
-        sizeof(header_buffer) - offset,
-        "%s %s %s\r\n",
-        version,
+        header_buffer + offset, // En que posición escribir
+        sizeof(header_buffer) - offset, // Cuanto espacio queda
+        "%s %s %s\r\n", // Formato en lo que lo voy a escribir (4 strings y un salto de linea)
+        version,  // Lo que voy a escribir
         status_code,
         reason_phrase
     );
