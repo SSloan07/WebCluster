@@ -83,7 +83,8 @@ const char *http_request_get_header(const Request *request, const char *key) {
 
     for (size_t i = 0; i < request->headerList->count; i++) {
         const Request_Header *header = &request->headerList->headers[i];
-        if (strcmp(headerToString(header->name), key) == 0) {
+
+        if (header->name != NULL && strcasecmp(header->name, key) == 0) {
             return header->value;
         }
     }

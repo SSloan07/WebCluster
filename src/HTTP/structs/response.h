@@ -4,7 +4,7 @@
 #include "request.h"
 #include <stdlib.h>
 
-#define MAX_HEADERS 64
+#define MAX_HEADERS 128
 
 typedef enum {
     STATUS_200,

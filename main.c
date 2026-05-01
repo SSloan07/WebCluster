@@ -6,7 +6,6 @@
 #include "ManageClient/manage_client.h"
 #include "ManageClient/thread_args.h"
 #include "Configuration/config.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

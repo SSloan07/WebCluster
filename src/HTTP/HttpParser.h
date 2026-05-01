@@ -32,10 +32,11 @@ const char *http_response_get_header(
     const HTTP_Response *response,
     const char *key
 );
+void http_set_document_root(const char *root_path);
 
 HTTP_Status processRequest(Request *req, HTTP_Response *res);
 
 void http_request_free(Request *request);
 void http_response_free(HTTP_Response *response);
-
+int http_request_is_method_supported(const Request *request);
 #endif

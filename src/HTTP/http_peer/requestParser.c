@@ -27,7 +27,7 @@ int parseRequestLine(const char *rawRequestLine , size_t rawLength, Request *req
 
             if(length >= sizeof(tempMethod) || length == 0) return -1;
 
-            memcpy(tempMethod, rawRequestLine + lastLetter , length);
+            memcpy(tempMethod, rawRequestLine + lastLetter , length); //memcpy(destino , origen , cantidad de bytes a copiar)
             tempMethod[length] = '\0';
             req->method = getHTTPMethod(tempMethod);
             
@@ -42,6 +42,8 @@ int parseRequestLine(const char *rawRequestLine , size_t rawLength, Request *req
             if (length == 0 || length > MAX_URI_LENGTH) return -1;
 
             req->requestURI = malloc(length + 1);
+            if (req->requestURI == NULL) return -1;
+
             memcpy(req->requestURI , rawRequestLine + lastLetter , length);
             req->requestURI[length] = '\0';
 
@@ -80,15 +82,15 @@ int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req, siz
     size_t lastLetter = *position;
     int value = 0;
 
-    char tempHeader[64];
-    Request_Header_Name reqHeader;
+    char tempHeader[128];
+    char tempValue[1024];
+    Request_Header_Name reqHeader = HEADER_UNKNOWN;
 
-    int foundEnd = 0;  
+    int foundEnd = 0;
 
     for (size_t i = *position; i < rawLength; i++) {
 
         if (rawRequestLine[i] == ':' && value == 0) {
-            if (i + 1 >= rawLength || rawRequestLine[i + 1] != ' ') return -1;
 
             size_t length = i - lastLetter;
             if (length >= sizeof(tempHeader) || length == 0) return -1;
@@ -97,9 +99,10 @@ int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req, siz
             tempHeader[length] = '\0';
             reqHeader = getRequestHeader(tempHeader);
 
-            if (reqHeader == HEADER_UNKNOWN) return -1;
-
-            lastLetter = i + 2;
+            lastLetter = i + 1;
+            while (lastLetter < rawLength && rawRequestLine[lastLetter] == ' ') {
+                lastLetter++;
+            }
             value = 1;
         }
 
@@ -107,15 +110,13 @@ int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req, siz
             if (i + 1 >= rawLength || rawRequestLine[i + 1] != '\n') return -1;
 
             size_t length = i - lastLetter;
-            char tempValue[1024];
-
-            if (length >= sizeof(tempValue) || length == 0) return -1;
+            if (length >= sizeof(tempValue)) return -1;
 
             memcpy(tempValue, rawRequestLine + lastLetter, length);
             tempValue[length] = '\0';
 
-            if (reqHeader != HEADER_UNKNOWN) {
-                addRequestHeader(req->headerList, reqHeader, tempValue);
+            if (addRequestHeader(req->headerList, reqHeader, tempHeader, tempValue) != 0) {
+                return -1;
             }
 
             lastLetter = i + 2;
@@ -160,6 +161,8 @@ int parseBody(const char *rawRequest, size_t rawLength , Request *req , size_t *
     if( (rawLength - *position) < bodyLength) return -1; // El content length lo mandaron mal
 
     req->body = malloc(bodyLength);
+    if (req->body == NULL) return -1;
+
     memcpy(req->body , rawRequest + *position, bodyLength);
     req->bodyLength = bodyLength;
 

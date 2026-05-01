@@ -21,12 +21,6 @@ OBJ_HTTP_PROXY = \
 	src/HTTP/structs/request.o \
 	src/HTTP/structs/response.o
 
-OBJ_HTTP_TEST = \
-	HTTP/structs/request.o HTTP/structs/response.o \
-	HTTP/requestParser.o HTTP/processRequest.o \
-	HTTP/utils/readFile.o HTTP/utils/getEnumRequestLine.o \
-	HTTP/utils/enumToString.o HTTP/utils/getDate.o \
-	HTTP/methods/get.o HTTP/methods/head.o
 
 OBJ_SERV = $(OBJ_NET) $(OBJ_PROXY) $(OBJ_MANAGE) $(OBJ_CONFIG) $(OBJ_HTTP_PROXY)
 
@@ -44,14 +38,9 @@ cliente: $(OBJ_NET) client_main.c
 backend: $(OBJ_NET) $(OBJ_HTTP_PROXY) backend_main.c
 	$(CC) $(CFLAGS) backend_main.c $(OBJ_NET) $(OBJ_HTTP_PROXY) -o backend
 
-http_test: $(OBJ_HTTP_TEST) main_http.c
-	$(CC) $(CFLAGS) main_http.c $(OBJ_HTTP_TEST) -o http_test
-
-run_http_test: http_test
-	./http_test
 
 clean:
-	rm -f $(OBJ_NET) $(OBJ_PROXY) $(OBJ_MANAGE) $(OBJ_CONFIG) $(OBJ_HTTP_PROXY) $(OBJ_HTTP_TEST) servidor cliente backend http_test
+	rm -f $(OBJ_NET) $(OBJ_PROXY) $(OBJ_MANAGE) $(OBJ_CONFIG) $(OBJ_HTTP_PROXY)servidor cliente backend 
 	@echo "Limpieza completada."
 
 .PHONY: all clean run_http_test

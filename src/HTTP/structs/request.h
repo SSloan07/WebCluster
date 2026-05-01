@@ -2,7 +2,7 @@
 #define REQUEST_H
 
 #include <stdlib.h>
-#define MAX_HEADERS 64
+#define MAX_HEADERS 128
 
 typedef enum {
     METHOD_GET,
@@ -23,7 +23,24 @@ typedef enum {
     HEADER_CONTENT_LENGTH,
     HEADER_USER_AGENT,
     HEADER_ACCEPT,
+    HEADER_ACCEPT_CHARSET,
+    HEADER_ACCEPT_ENCODING,
+    HEADER_ACCEPT_LANGUAGE,
+    HEADER_AUTHORIZATION,
+    HEADER_EXPECT,
+    HEADER_FROM,
+    HEADER_IF_MATCH,
+    HEADER_IF_MODIFIED_SINCE,
+    HEADER_IF_NONE_MATCH,
+    HEADER_IF_RANGE,
+    HEADER_IF_UNMODIFIED_SINCE,
+    HEADER_MAX_FORWARDS,
+    HEADER_PROXY_AUTHORIZATION,
+    HEADER_RANGE,
+    HEADER_REFERER,
+    HEADER_TE,
     HEADER_UNKNOWN,
+
 } Request_Header_Name;
 
 typedef enum {
@@ -33,7 +50,8 @@ typedef enum {
 } HTTP_Version;
 
 typedef struct {
-    Request_Header_Name name;
+    Request_Header_Name type;
+    char *name;
     char *value;
 } Request_Header;
 
@@ -55,7 +73,7 @@ void printRequest(Request *req);
 Request *createRequest();
 void freeRequest (Request *req);
 Request_HeaderList *createRequestHeaderList();
-int addRequestHeader(Request_HeaderList *list , Request_Header_Name name , const char *value);
+int addRequestHeader(Request_HeaderList *list , Request_Header_Name type , const char *name , const char *value);
 void freeRequestHeaderList(Request_HeaderList *list);
 Request_Header *searchHeader(Request_HeaderList *headerList , Request_Header_Name requestHeader);
 

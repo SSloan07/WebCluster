@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> // Para malloc y free
 
 void printResponse(HTTP_Response *res) {
     char headerBuffer[4096];
