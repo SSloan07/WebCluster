@@ -3770,3 +3770,44 @@ File deleted successfully\r\n
 
 ========================
 [2026-05-02 13:40:05] [INFO] Comunicacion completada correctamente
+[2026-05-02 14:06:05] [INFO] PIBL iniciado correctamente
+[2026-05-02 14:06:05] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 14:07:00] ===== REQUEST =====
+Cliente: 127.0.0.1:58492
+Backend: 127.0.0.1:5001
+Contenido:
+TRACE / HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-05-02 14:07:00] ===== RESPONSE =====
+Cliente: 127.0.0.1:58492
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Content-Type: message/http\r\n
+Content-Length: 80\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 14:07:00] ===== RESPONSE =====
+Cliente: 127.0.0.1:58492
+Backend: 127.0.0.1:5001
+Contenido:
+TRACE / HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+========================
+[2026-05-02 14:07:00] [INFO] Comunicacion completada correctamente
+[2026-05-02 15:58:29] [INFO] PIBL iniciado correctamente
+[2026-05-02 15:58:29] [INFO] Archivo de configuracion cargado correctamente

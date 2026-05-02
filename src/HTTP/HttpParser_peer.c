@@ -2,6 +2,7 @@
 #include "http_peer/requestParser.h"
 #include "http_peer/utils/enumToString.h"
 
+#include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -118,7 +119,54 @@ int http_request_is_method_supported(const Request *request) {
            request->method == METHOD_POST ||
            request->method == METHOD_PUT ||
            request->method == METHOD_DELETE ||
-           request->method == METHOD_TRACE;
+           request->method == METHOD_TRACE ||
+           request->method == METHOD_CONNECT;
+}
+
+int parse_request_connect(
+    const char *request_uri,
+    char *ip_out,
+    size_t ip_out_size,
+    int *port_out
+) {
+    const char *colon;
+    size_t ip_length;
+    char *endptr;
+    long parsed_port;
+    struct in_addr ipv4_addr;
+
+    if (request_uri == NULL || ip_out == NULL || port_out == NULL || ip_out_size == 0) {
+        return -1;
+    }
+
+    colon = strchr(request_uri, ':');
+    if (colon == NULL) {
+        return -1;
+    }
+
+    ip_length = (size_t) (colon - request_uri);
+    if (ip_length == 0 || ip_length >= ip_out_size) {
+        return -1;
+    }
+
+    memcpy(ip_out, request_uri, ip_length);
+    ip_out[ip_length] = '\0';
+
+    if (*(colon + 1) == '\0') {
+        return -1;
+    }
+
+    parsed_port = strtol(colon + 1, &endptr, 10);
+    if (*endptr != '\0' || parsed_port < 1 || parsed_port > 65535) {
+        return -1;
+    }
+
+    if (inet_pton(AF_INET, ip_out, &ipv4_addr) != 1) { //internet presentation to network address, valida que la ip sea correcta
+        return -1;
+    }
+
+    *port_out = (int) parsed_port;
+    return 0;
 }
 
 void http_request_free(Request *request) {

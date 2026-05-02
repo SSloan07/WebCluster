@@ -67,28 +67,8 @@ void *manage_client(void *arg) {
     char *response_buffer = NULL;
     size_t response_size = 0;
 
-    pthread_mutex_lock(mutex);
-
     printf(CYAN "[CONEXION] Cliente conectado desde %s:%d\n" RESET,
            client_sock->ip_in, client_sock->port_in);
-
-    printf(BLUE "[HEALTHCHECK] Verificando estado de servidores...\n" RESET);
-    ping_servers(lb);
-
-    target_server = lb_next_server(lb);
-
-    pthread_mutex_unlock(mutex);
-
-    if (target_server == NULL) {
-        printf(RED "[ERROR] No hay backend disponible.\n" RESET);
-        logger_error("No hay backend disponible");
-        tcp_close(client_sock);
-        free(args);
-        return NULL;
-    }
-
-    printf(CYAN "\n[BALANCEADOR] Redirigiendo a -> %s:%d\n" RESET,
-           target_server->ip, target_server->port);
 
     ssize_t bytes_received = tcp_recv(client_sock->fd, buffer, sizeof(buffer));
     if (bytes_received <= 0) {
@@ -101,24 +81,84 @@ void *manage_client(void *arg) {
 
     parse_result = http_parse_request(buffer, (size_t) bytes_received, &request);
 
-    if (parse_result == HTTP_PARSE_OK) {
-        printf(CYAN "[HTTP] Metodo: %s\n" RESET, methodToString(request.method));
-        printf(CYAN "[HTTP] URI: %s\n" RESET, request.requestURI);
-        printf(CYAN "[HTTP] Version: %s\n" RESET, versionToString(request.httpVersion));
-
-        const char *host = http_request_get_header(&request, "Host");
-        if (host != NULL) {
-            printf(CYAN "[HTTP] Host: %s\n" RESET, host);
-        }
-
-        if (!http_request_is_method_supported(&request)) {
-            printf(RED "[HTTP] Metodo no soportado por el proyecto.\n" RESET);
-        }
-    } else if (parse_result == HTTP_PARSE_INCOMPLETE) {
-        printf(RED "[HTTP] Peticion HTTP incompleta.\n" RESET);
-    } else {
+    if (parse_result != HTTP_PARSE_OK) {
         printf(RED "[HTTP] Error al parsear la peticion HTTP.\n" RESET);
+        tcp_send_all(
+            client_sock->fd,
+            "HTTP/1.1 400 Bad Request\r\n"
+            "Content-Length: 0\r\n"
+            "Connection: close\r\n"
+            "\r\n",
+            strlen(
+                "HTTP/1.1 400 Bad Request\r\n"
+                "Content-Length: 0\r\n"
+                "Connection: close\r\n"
+                "\r\n"
+            )
+        );
+        tcp_close(client_sock);
+        free(args);
+        return NULL;
     }
+
+    printf(CYAN "[HTTP] Metodo: %s\n" RESET, methodToString(request.method));
+    printf(CYAN "[HTTP] URI: %s\n" RESET, request.requestURI);
+    printf(CYAN "[HTTP] Version: %s\n" RESET, versionToString(request.httpVersion));
+
+    const char *host = http_request_get_header(&request, "Host");
+    if (host != NULL) {
+        printf(CYAN "[HTTP] Host: %s\n" RESET, host);
+    }
+
+    if (!http_request_is_method_supported(&request)) {
+        printf(RED "[HTTP] Metodo no soportado por el proyecto.\n" RESET);
+        tcp_send_all(
+            client_sock->fd,
+            "HTTP/1.1 405 Method Not Allowed\r\n"
+            "Content-Length: 0\r\n"
+            "Connection: close\r\n"
+            "\r\n",
+            strlen(
+                "HTTP/1.1 405 Method Not Allowed\r\n"
+                "Content-Length: 0\r\n"
+                "Connection: close\r\n"
+                "\r\n"
+            )
+        );
+        http_request_free(&request);
+        tcp_close(client_sock);
+        free(args);
+        return NULL;
+    }
+
+    if (request.method == METHOD_CONNECT) { // Manejo especial para CONNECT, no se balancea ni cachea, se crea tunel directo al backend indicado en el URI. 
+        tcp_handle_connect(client_sock, request.requestURI);
+        http_request_free(&request);
+        tcp_close(client_sock);
+        free(args);
+        return NULL;
+    }
+
+    pthread_mutex_lock(mutex);
+
+    printf(BLUE "[HEALTHCHECK] Verificando estado de servidores...\n" RESET);
+    ping_servers(lb);
+
+    target_server = lb_next_server(lb);
+
+    pthread_mutex_unlock(mutex);
+
+    if (target_server == NULL) {
+        printf(RED "[ERROR] No hay backend disponible.\n" RESET);
+        logger_error("No hay backend disponible");
+        http_request_free(&request);
+        tcp_close(client_sock);
+        free(args);
+        return NULL;
+    }
+
+    printf(CYAN "\n[BALANCEADOR] Redirigiendo a -> %s:%d\n" RESET,
+           target_server->ip, target_server->port);
 
     printf(BLUE "[INFO] Se recibieron %zd bytes del cliente.\n" RESET, bytes_received);
 
@@ -136,7 +176,6 @@ void *manage_client(void *arg) {
 
     int cache_status = http_request_is_cacheable(&request);
     if (cache_status == IS_CACHEABLE) {
-
         cache_result_t lookup_result;
 
         printf(GREEN "[CACHE] La peticion es cacheable, verificando cache...\n" RESET);

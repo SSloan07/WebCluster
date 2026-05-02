@@ -39,4 +39,10 @@ HTTP_Status processRequest(Request *req, HTTP_Response *res);
 void http_request_free(Request *request);
 void http_response_free(HTTP_Response *response);
 int http_request_is_method_supported(const Request *request);
+int parse_request_connect(
+    const char *request_uri,
+    char *ip_out,
+    size_t ip_out_size,
+    int *port_out
+);
 #endif
