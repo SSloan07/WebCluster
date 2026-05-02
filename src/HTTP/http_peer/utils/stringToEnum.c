@@ -44,6 +44,9 @@ Request_Header_Name getRequestHeader(const char *strHeader){
     if (strcasecmp(strHeader, "Referer") == 0) return HEADER_REFERER;
     if (strcasecmp(strHeader, "TE") == 0) return HEADER_TE;
     if (strcasecmp(strHeader, "User-Agent") == 0) return HEADER_USER_AGENT;
+    if (strcasecmp(strHeader, "Cookie") == 0) return HEADER_COOKIE;
+    if (strcasecmp(strHeader, "Cache-Control") == 0) return HEADER_CACHE_CONTROL;
+    
 
     // Headers comunes
     if (strcasecmp(strHeader, "Content-Type") == 0) return HEADER_CONTENT_TYPE;

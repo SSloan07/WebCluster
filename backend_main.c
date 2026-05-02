@@ -193,6 +193,8 @@ int main(int argc, char *argv[]) {
         Request request = {0};
         http_parse_result_t parse_result = http_parse_request(buffer, (size_t)n, &request);
 
+        
+
         if (parse_result != HTTP_PARSE_OK) {
             printf(RED "[HTTP] Error al parsear la petición HTTP.\n" RESET);
             send_text_response(client_sock->fd, 400, "Bad Request", "400 Bad Request\n", 1);

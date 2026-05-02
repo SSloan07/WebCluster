@@ -2998,3 +2998,228 @@ Not Found\n
 
 ========================
 [2026-05-01 11:50:16] [INFO] Comunicación completada correctamente
+[2026-05-01 21:26:38] [INFO] PIBL iniciado correctamente
+[2026-05-01 21:26:38] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-01 21:27:13] ===== REQUEST =====
+Cliente: 127.0.0.1:52844
+Backend: 127.0.0.1:5001
+Contenido:
+GET /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+Connection: keep-alive\r\n
+sec-ch-ua: "Google Chrome";v="147", "Not.A/Brand";v="8", "Chromium";v="147"\r\n
+sec-ch-ua-mobile: ?0\r\n
+sec-ch-ua-platform: "Windows"\r\n
+Upgrade-Insecure-Requests: 1\r\n
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36\r\n
+Sec-Purpose: prefetch;prerender\r\n
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\r\n
+Sec-Fetch-Site: none\r\n
+Sec-Fetch-Mode: navigate\r\n
+Sec-Fetch-User: ?1\r\n
+Sec-Fetch-Dest: document\r\n
+Accept-Encoding: gzip, deflate, br, zstd\r\n
+Accept-Language: es-US,es-419;q=0.9,es;q=0.8\r\n
+Cookie: csrftoken=j13grG57N6YMSZMGBGdToGUOXWr7EaZV; sessionid=.eJxVjLsOwjAMAP_FM4qclMRVR3a-obJjhxRQK_UxVfw7qtQB1rvT7dDzttZ-W2zuB4UOAlx-mXB-2XgIffL4mFyexnUexB2JO-3i7pPa-3a2f4PKS4UOfElRjKlE0ZCiNw7IQqWlNmPEiBiFqCFjT2JFOF3VCmKTGgpeFT5f8Pg4Hg:1wHAaL:rW9I-djG5lnlP24eUZFYbRZgZWaAeEVKFC1gCimh7WQ\r\n
+\r\n
+
+=======================
+
+[2026-05-01 21:27:13] ===== RESPONSE =====
+Cliente: 127.0.0.1:52844
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Date: Sat, 02 May 2026 02:27:13 GMT\r\n
+Content-Length: 55\r\n
+Content-Type: text/html\r\n
+Server: El server de los mas papus\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-01 21:27:13] ===== RESPONSE =====
+Cliente: 127.0.0.1:52844
+Backend: 127.0.0.1:5001
+Contenido:
+<h1>Hello from WebCluster backend, this is a test</h1>\n
+
+========================
+[2026-05-01 21:27:13] [INFO] Comunicacion completada correctamente
+
+[2026-05-01 21:27:16] ===== REQUEST =====
+Cliente: 127.0.0.1:52854
+Backend: 127.0.0.1:5001
+Contenido:
+GET /favicon.ico HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+Connection: keep-alive\r\n
+sec-ch-ua-platform: "Windows"\r\n
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36\r\n
+sec-ch-ua: "Google Chrome";v="147", "Not.A/Brand";v="8", "Chromium";v="147"\r\n
+sec-ch-ua-mobile: ?0\r\n
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8\r\n
+Sec-Fetch-Site: same-origin\r\n
+Sec-Fetch-Mode: no-cors\r\n
+Sec-Fetch-Dest: image\r\n
+Referer: http://127.0.0.1:8080/index.html\r\n
+Accept-Encoding: gzip, deflate, br, zstd\r\n
+Accept-Language: es-US,es-419;q=0.9,es;q=0.8\r\n
+Cookie: csrftoken=j13grG57N6YMSZMGBGdToGUOXWr7EaZV; sessionid=.eJxVjLsOwjAMAP_FM4qclMRVR3a-obJjhxRQK_UxVfw7qtQB1rvT7dDzttZ-W2zuB4UOAlx-mXB-2XgIffL4mFyexnUexB2JO-3i7pPa-3a2f4PKS4UOfElRjKlE0ZCiNw7IQqWlNmPEiBiFqCFjT2JFOF3VCmKTGgpeFT5f8Pg4Hg:1wHAaL:rW9I-djG5lnlP24eUZFYbRZgZWaAeEVKFC1gCimh7WQ\r\n
+\r\n
+
+=======================
+
+[2026-05-01 21:27:16] ===== RESPONSE =====
+Cliente: 127.0.0.1:52854
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 404 Not Found\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-01 21:27:16] ===== RESPONSE =====
+Cliente: 127.0.0.1:52854
+Backend: 127.0.0.1:5001
+Contenido:
+Not Found\n
+
+========================
+[2026-05-01 21:27:16] [INFO] Comunicacion completada correctamente
+
+[2026-05-01 21:27:44] ===== REQUEST =====
+Cliente: 127.0.0.1:33688
+Backend: 127.0.0.1:5001
+Contenido:
+GET /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-05-01 21:27:44] ===== RESPONSE =====
+Cliente: 127.0.0.1:33688
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Date: Sat, 02 May 2026 02:27:44 GMT\r\n
+Content-Length: 55\r\n
+Content-Type: text/html\r\n
+Server: El server de los mas papus\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-01 21:27:44] ===== RESPONSE =====
+Cliente: 127.0.0.1:33688
+Backend: 127.0.0.1:5001
+Contenido:
+<h1>Hello from WebCluster backend, this is a test</h1>\n
+
+========================
+[2026-05-01 21:27:44] [INFO] Comunicacion completada correctamente
+
+[2026-05-01 21:28:56] ===== REQUEST =====
+Cliente: 127.0.0.1:55278
+Backend: 127.0.0.1:5001
+Contenido:
+GET /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+Connection: keep-alive\r\n
+sec-ch-ua: "Google Chrome";v="147", "Not.A/Brand";v="8", "Chromium";v="147"\r\n
+sec-ch-ua-mobile: ?0\r\n
+sec-ch-ua-platform: "Windows"\r\n
+Upgrade-Insecure-Requests: 1\r\n
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36\r\n
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\r\n
+Sec-Fetch-Site: none\r\n
+Sec-Fetch-Mode: navigate\r\n
+Sec-Fetch-User: ?1\r\n
+Sec-Fetch-Dest: document\r\n
+Accept-Encoding: gzip, deflate, br, zstd\r\n
+Accept-Language: es-US,es-419;q=0.9,es;q=0.8\r\n
+Cookie: csrftoken=j13grG57N6YMSZMGBGdToGUOXWr7EaZV; sessionid=.eJxVjLsOwjAMAP_FM4qclMRVR3a-obJjhxRQK_UxVfw7qtQB1rvT7dDzttZ-W2zuB4UOAlx-mXB-2XgIffL4mFyexnUexB2JO-3i7pPa-3a2f4PKS4UOfElRjKlE0ZCiNw7IQqWlNmPEiBiFqCFjT2JFOF3VCmKTGgpeFT5f8Pg4Hg:1wHAaL:rW9I-djG5lnlP24eUZFYbRZgZWaAeEVKFC1gCimh7WQ\r\n
+\r\n
+
+=======================
+
+[2026-05-01 21:28:56] ===== RESPONSE =====
+Cliente: 127.0.0.1:55278
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Date: Sat, 02 May 2026 02:28:56 GMT\r\n
+Content-Length: 55\r\n
+Content-Type: text/html\r\n
+Server: El server de los mas papus\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-01 21:28:56] ===== RESPONSE =====
+Cliente: 127.0.0.1:55278
+Backend: 127.0.0.1:5001
+Contenido:
+<h1>Hello from WebCluster backend, this is a test</h1>\n
+
+========================
+[2026-05-01 21:28:56] [INFO] Comunicacion completada correctamente
+
+[2026-05-01 21:29:28] ===== REQUEST =====
+Cliente: 127.0.0.1:34350
+Backend: 127.0.0.1:5001
+Contenido:
+GET /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-05-01 21:29:28] ===== RESPONSE =====
+Cliente: 127.0.0.1:34350
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Date: Sat, 02 May 2026 02:29:28 GMT\r\n
+Content-Length: 55\r\n
+Content-Type: text/html\r\n
+Server: El server de los mas papus\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-01 21:29:28] ===== RESPONSE =====
+Cliente: 127.0.0.1:34350
+Backend: 127.0.0.1:5001
+Contenido:
+<h1>Hello from WebCluster backend, this is a test</h1>\n
+
+========================
+[2026-05-01 21:29:28] [INFO] Comunicacion completada correctamente
+
+[2026-05-01 21:29:31] ===== REQUEST =====
+Cliente: 127.0.0.1:59910
+Backend: 127.0.0.1:5001
+Contenido:
+GET /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+[2026-05-01 21:29:32] [INFO] Respuesta servida desde cache
+[2026-05-01 21:30:36] [ERROR] No se pudo leer del cliente o se desconecto

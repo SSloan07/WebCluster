@@ -6,22 +6,22 @@
 #include "ManageClient/manage_client.h"
 #include "ManageClient/thread_args.h"
 #include "Configuration/config.h"
+#include "src/cache/Manage_cache.h"
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
-#include <pthread.h>
 
 #define BACKLOG 10
-#define BUFFER_SIZE 4096
 
 int main() {
     printf("\n=== [PIBL-WS] Iniciando Proxy Inverso + Balanceador ===\n");
 
     proxy_config_t config;
+    cache_store_t cache_store;
 
     if (load_config("pibl.conf", &config) != 0) {
-        printf("[ERROR] No se pudo cargar el archivo de configuración.\n");
+        printf("[ERROR] No se pudo cargar el archivo de configuracion.\n");
         return 1;
     }
 
@@ -31,7 +31,7 @@ int main() {
     }
 
     logger_info("PIBL iniciado correctamente");
-    logger_info("Archivo de configuración cargado correctamente");
+    logger_info("Archivo de configuracion cargado correctamente");
 
     load_balancer_t *lb = cluster_init();
     if (!lb) {
@@ -46,12 +46,26 @@ int main() {
             printf("[ERROR] No se pudo agregar backend %s:%d\n",
                    config.backends[i].ip,
                    config.backends[i].port);
-            logger_error("No se pudo agregar un backend desde configuración");
+            logger_error("No se pudo agregar un backend desde configuracion");
         }
     }
 
     printf("[INFO] Se registraron %d servidores en el cluster.\n", lb->server_count);
-    printf("[INFO] TTL de caché configurado: %d segundos.\n", config.cache_ttl);
+    printf("[INFO] TTL de cache configurado: %d segundos.\n", config.cache_ttl);
+
+    if (cache_init(&cache_store, ".cache", config.cache_ttl) != CACHE_SUCCESS) {
+        printf("[ERROR] No se pudo inicializar la cache.\n");
+        logger_error("No se pudo inicializar la cache");
+        logger_close();
+        return 1;
+    }
+
+    if (cache_start_cleaner_thread(&cache_store) != CACHE_SUCCESS) {
+        printf("[ERROR] No se pudo iniciar el hilo limpiador de cache.\n");
+        logger_error("No se pudo iniciar el hilo limpiador de cache");
+        logger_close();
+        return 1;
+    }
 
     printf("\n[INFO] Verificando estado inicial de los servidores...\n");
     int alive = ping_servers(lb);
@@ -71,12 +85,12 @@ int main() {
     pthread_mutex_t lb_mutex = PTHREAD_MUTEX_INITIALIZER;
 
     while (1) {
-        printf("[ESPERA] Esperando una nueva conexión de cliente...\n");
+        printf("[ESPERA] Esperando una nueva conexion de cliente...\n");
 
         net_socket_t *client_sock = tcp_accept(server_fd);
         if (client_sock == NULL) {
-            printf("[ERROR] Falló la aceptación del cliente.\n");
-            logger_error("Falló la aceptación del cliente");
+            printf("[ERROR] Fallo la aceptacion del cliente.\n");
+            logger_error("Fallo la aceptacion del cliente");
             continue;
         }
 
@@ -91,6 +105,7 @@ int main() {
         args->client_sock = client_sock;
         args->lb = lb;
         args->mutex = &lb_mutex;
+        args->cache_store = &cache_store;
 
         pthread_t hilo_para_cliente;
         if (pthread_create(&hilo_para_cliente, NULL, manage_client, args) != 0) {
