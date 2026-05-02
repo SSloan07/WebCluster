@@ -3223,3 +3223,53 @@ Accept: */*\r\n
 =======================
 [2026-05-01 21:29:32] [INFO] Respuesta servida desde cache
 [2026-05-01 21:30:36] [ERROR] No se pudo leer del cliente o se desconecto
+[2026-05-02 11:12:24] [INFO] PIBL iniciado correctamente
+[2026-05-02 11:12:24] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 11:12:33] ===== REQUEST =====
+Cliente: 127.0.0.1:49052
+Backend: 127.0.0.1:5001
+Contenido:
+GET /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-05-02 11:12:33] ===== RESPONSE =====
+Cliente: 127.0.0.1:49052
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Date: Sat, 02 May 2026 16:12:33 GMT\r\n
+Content-Length: 55\r\n
+Content-Type: text/html\r\n
+Server: El server de los mas papus\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 11:12:33] ===== RESPONSE =====
+Cliente: 127.0.0.1:49052
+Backend: 127.0.0.1:5001
+Contenido:
+<h1>Hello from WebCluster backend, this is a test</h1>\n
+
+========================
+[2026-05-02 11:12:33] [INFO] Comunicacion completada correctamente
+
+[2026-05-02 11:12:41] ===== REQUEST =====
+Cliente: 127.0.0.1:44404
+Backend: 127.0.0.1:5001
+Contenido:
+GET /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+[2026-05-02 11:12:41] [INFO] Respuesta servida desde cache

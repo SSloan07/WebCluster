@@ -6,7 +6,7 @@ OBJ_NET = src/Network/tcp.o
 OBJ_PROXY = src/Proxy/Cluster.o src/Proxy/RoundRobin.o src/Proxy/Logger.o
 OBJ_MANAGE = ManageClient/manage_client.o
 OBJ_CONFIG = Configuration/config.o
-OBJ_CACHE = src/cache/Manage_cache.o
+OBJ_CACHE = src/cache/Manage_cache.o src/cache/utils/cache_utils.o
 OBJ_HTTP_PROXY = \
 	src/HTTP/HttpParser.o \
 	src/HTTP/HttpParser_peer.o \

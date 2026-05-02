@@ -136,11 +136,12 @@ void *manage_client(void *arg) {
 
     int cache_status = http_request_is_cacheable(&request);
     if (cache_status == IS_CACHEABLE) {
+
         cache_result_t lookup_result;
 
         printf(GREEN "[CACHE] La peticion es cacheable, verificando cache...\n" RESET);
 
-        if (http_build_cache_key(&request, cache_key, sizeof(cache_key)) == 0) {
+        if (http_build_cache_key(&request, cache_key, sizeof(cache_key)) == CACHE_SUCCESS) {
             printf(GREEN "[CACHE] Clave de cache construida: %s\n" RESET, cache_key);
 
             lookup_result = cache_lookup(cache_store, cache_key, cache_file_path, sizeof(cache_file_path));
