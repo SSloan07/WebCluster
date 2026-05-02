@@ -1,16 +1,17 @@
 #include "enumToString.h"
 
 const char *methodToString(HTTP_Method method){
-    if(method == METHOD_GET) return "GET"; 
-    if(method == METHOD_POST) return "POST"; 
-    if(method == METHOD_HEAD) return "HEAD"; 
+    if(method == METHOD_GET) return "GET";
+    if(method == METHOD_POST) return "POST";
+    if(method == METHOD_HEAD) return "HEAD";
     if(method == METHOD_PUT) return "PUT";
-     return "UNKNOWN METHOD"; 
+    if(method == METHOD_DELETE) return "DELETE";
+    return "UNKNOWN METHOD";
 }
 
 const char *versionToString(HTTP_Version version){
-    if(version == VERSION_HTTP1) return "HTTP/1.1"; 
-     return "UNKNOWN VERSION"; 
+    if(version == VERSION_HTTP1) return "HTTP/1.1";
+    return "UNKNOWN VERSION";
 }
 
 const char *statusToString(HTTP_Status status){
@@ -21,7 +22,7 @@ const char *statusToString(HTTP_Status status){
     if(status == STATUS_400) return "400";
     if(status == STATUS_500) return "500";
     if(status == STATUS_505) return "505";
-    return "777"; // Para la buena suerte
+    return "777";
 }
 
 const char *statusToReasonPhrase(HTTP_Status status){
@@ -43,4 +44,3 @@ const char *headerToString(Request_Header_Name name){
     if(name == HEADER_ACCEPT) return "Accept";
     return "UNKOWN HEADER";
 }
-

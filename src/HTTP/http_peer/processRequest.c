@@ -1,15 +1,14 @@
 #include "processRequest.h"
+#include "methods/delete.h"
 #include "methods/get.h"
 #include "methods/head.h"
 #include "methods/post.h"
 #include "methods/put.h"
 
-#include <string.h>
 #include <stdio.h>
-
+#include <string.h>
 
 HTTP_Status http_peer_process_request(Request *req, HTTP_Response *res) {
-    
     if(req->method == METHOD_UNKNOWN) return STATUS_400;
     if(req->httpVersion == VERSION_UNKNOWN) return STATUS_505;
 
@@ -24,14 +23,12 @@ HTTP_Status http_peer_process_request(Request *req, HTTP_Response *res) {
 
         case METHOD_POST:
             return HTTPPost(req , res);
-            break;
 
         case METHOD_PUT:
             return HTTPPut(req, res);
-            break;
 
         case METHOD_DELETE:
-            break;
+            return HTTPDelete(req, res);
 
         case METHOD_TRACE:
             break;
@@ -40,9 +37,8 @@ HTTP_Status http_peer_process_request(Request *req, HTTP_Response *res) {
             break;
 
         case METHOD_OPTIONS:
-
             break;
-        
+
         default:
             return STATUS_400;
     }

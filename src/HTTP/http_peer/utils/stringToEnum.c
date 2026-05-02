@@ -8,7 +8,7 @@ HTTP_Method getHTTPMethod(const char *strMethod){
     if(strcmp(strMethod , "HEAD") == 0) return METHOD_HEAD;
     if(strcmp(strMethod , "POST") == 0) return METHOD_POST;
     if(strcmp(strMethod , "PUT") == 0) return METHOD_PUT;
-    // if(strcmp(strMethod , "DELETE") == 0) return METHOD_DELETE;
+    if(strcmp(strMethod , "DELETE") == 0) return METHOD_DELETE;
     // if(strcmp(strMethod , "TRACE") == 0) return METHOD_TRACE;
     // if(strcmp(strMethod , "CONNECT") == 0) return METHOD_CONNECT;
     // if(strcmp(strMethod , "OPTIONS") == 0) return METHOD_OPTIONS;
@@ -47,11 +47,8 @@ Request_Header_Name getRequestHeader(const char *strHeader){
     if (strcasecmp(strHeader, "Cookie") == 0) return HEADER_COOKIE;
     if (strcasecmp(strHeader, "Cache-Control") == 0) return HEADER_CACHE_CONTROL;
     
-
-    // Headers comunes
     if (strcasecmp(strHeader, "Content-Type") == 0) return HEADER_CONTENT_TYPE;
     if (strcasecmp(strHeader, "Content-Length") == 0) return HEADER_CONTENT_LENGTH;
     
     return HEADER_UNKNOWN;
 }
-

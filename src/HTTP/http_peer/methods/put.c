@@ -1,27 +1,16 @@
 #include "put.h"
+#include "../utils/readFile.h"
 
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <unistd.h>
 
-#define UPLOAD_DIR "./files"
-
 HTTP_Status HTTPPut(Request *req, HTTP_Response *res) {
-    if (strncmp(req->requestURI, "/files/", 7) != 0) {
-        return STATUS_405;
-    }
-
-    const char *filename = req->requestURI + 7;
-
-    if (strlen(filename) == 0) return STATUS_400;
-    if (strstr(filename, "..") != NULL || strchr(filename, '/')) return STATUS_400;
-
     char fullpath[512];
-    int bytesWritten = snprintf(fullpath, sizeof(fullpath), "%s/%s", UPLOAD_DIR, filename);
-    if (bytesWritten < 0 || bytesWritten >= (int) sizeof(fullpath)) return STATUS_400;
 
-    mkdir(UPLOAD_DIR, 0755);
+    if (req->requestURI == NULL || strlen(req->requestURI) <= 1) return STATUS_400;
+    if (strstr(req->requestURI, "..") != NULL) return STATUS_400;
+    if (buildDocumentPath(req->requestURI, fullpath, sizeof(fullpath)) != 0) return STATUS_400;
 
     int existed_before = (access(fullpath, F_OK) == 0);
 
