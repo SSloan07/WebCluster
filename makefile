@@ -14,6 +14,7 @@ OBJ_HTTP_PROXY = \
 	src/HTTP/http_peer/methods/get.o \
 	src/HTTP/http_peer/methods/head.o \
 	src/HTTP/http_peer/methods/post.o \
+	src/HTTP/http_peer/methods/put.o \
 	src/HTTP/http_peer/requestParser.o \
 	src/HTTP/http_peer/utils/readFile.o \
 	src/HTTP/http_peer/utils/getDate.o \

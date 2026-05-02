@@ -2,6 +2,7 @@
 #include "methods/get.h"
 #include "methods/head.h"
 #include "methods/post.h"
+#include "methods/put.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -26,6 +27,7 @@ HTTP_Status http_peer_process_request(Request *req, HTTP_Response *res) {
             break;
 
         case METHOD_PUT:
+            return HTTPPut(req, res);
             break;
 
         case METHOD_DELETE:

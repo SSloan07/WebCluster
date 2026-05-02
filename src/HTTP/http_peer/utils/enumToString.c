@@ -4,6 +4,7 @@ const char *methodToString(HTTP_Method method){
     if(method == METHOD_GET) return "GET"; 
     if(method == METHOD_POST) return "POST"; 
     if(method == METHOD_HEAD) return "HEAD"; 
+    if(method == METHOD_PUT) return "PUT";
      return "UNKNOWN METHOD"; 
 }
 

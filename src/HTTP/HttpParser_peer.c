@@ -57,7 +57,8 @@ http_parse_result_t http_parse_request(
         return HTTP_PARSE_ERROR;
     }
 
-    if (request->method == METHOD_POST && parseBody(buffer, len, request, &position) != 0) {
+    if ((request->method == METHOD_POST || request->method == METHOD_PUT) &&
+        parseBody(buffer, len, request, &position) != 0) {
         http_request_free(request);
         return HTTP_PARSE_ERROR;
     }
@@ -114,7 +115,8 @@ int http_request_is_method_supported(const Request *request) {
 
     return request->method == METHOD_GET ||
            request->method == METHOD_HEAD ||
-           request->method == METHOD_POST;
+           request->method == METHOD_POST ||
+           request->method == METHOD_PUT;
 }
 
 void http_request_free(Request *request) {

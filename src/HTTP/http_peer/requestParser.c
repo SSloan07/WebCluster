@@ -137,7 +137,7 @@ int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req, siz
 
 int parseBody(const char *rawRequest, size_t rawLength , Request *req , size_t *position) {
 
-    if(req->method != METHOD_POST) return -1; // Body en get o en head, esta mal
+    if(req->method != METHOD_POST && req->method != METHOD_PUT) return -1; // Solo POST y PUT manejan body aqui
 
     if(*position >= rawLength) return -1; // No hay body
 

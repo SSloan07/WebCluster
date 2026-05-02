@@ -3273,3 +3273,225 @@ Accept: */*\r\n
 
 =======================
 [2026-05-02 11:12:41] [INFO] Respuesta servida desde cache
+[2026-05-02 12:12:53] [INFO] PIBL iniciado correctamente
+[2026-05-02 12:12:53] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 12:14:58] ===== REQUEST =====
+Cliente: 127.0.0.1:49176
+Backend: 127.0.0.1:5001
+Contenido:
+PUT /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 12:14:58] ===== RESPONSE =====
+Cliente: 127.0.0.1:49176
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 405 Method Not Allowed\r\n
+Content-Length: 23\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 12:14:58] ===== RESPONSE =====
+Cliente: 127.0.0.1:49176
+Backend: 127.0.0.1:5001
+Contenido:
+405 Method Not Allowed\n
+
+========================
+[2026-05-02 12:14:58] [INFO] Comunicacion completada correctamente
+[2026-05-02 12:17:07] [INFO] PIBL iniciado correctamente
+[2026-05-02 12:17:07] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 12:17:20] ===== REQUEST =====
+Cliente: 127.0.0.1:59200
+Backend: 127.0.0.1:5001
+Contenido:
+PUT /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 12:17:20] ===== RESPONSE =====
+Cliente: 127.0.0.1:59200
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 405 Method Not Allowed\r\n
+Content-Length: 23\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 12:17:20] ===== RESPONSE =====
+Cliente: 127.0.0.1:59200
+Backend: 127.0.0.1:5001
+Contenido:
+405 Method Not Allowed\n
+
+========================
+[2026-05-02 12:17:20] [INFO] Comunicacion completada correctamente
+[2026-05-02 12:21:52] [INFO] PIBL iniciado correctamente
+[2026-05-02 12:21:52] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 12:22:06] ===== REQUEST =====
+Cliente: 127.0.0.1:47796
+Backend: 127.0.0.1:5001
+Contenido:
+PUT /files/archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 12:22:06] ===== RESPONSE =====
+Cliente: 127.0.0.1:47796
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 405 Method Not Allowed\r\n
+Content-Length: 23\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 12:22:06] ===== RESPONSE =====
+Cliente: 127.0.0.1:47796
+Backend: 127.0.0.1:5001
+Contenido:
+405 Method Not Allowed\n
+
+========================
+[2026-05-02 12:22:06] [INFO] Comunicacion completada correctamente
+[2026-05-02 12:24:32] [INFO] PIBL iniciado correctamente
+[2026-05-02 12:24:32] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 13:04:52] ===== REQUEST =====
+Cliente: 127.0.0.1:50636
+Backend: 127.0.0.1:5002
+Contenido:
+PUT /files/archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 13:04:52] ===== RESPONSE =====
+Cliente: 127.0.0.1:50636
+Backend: 127.0.0.1:5002
+Contenido:
+HTTP/1.1 405 Method Not Allowed\r\n
+Content-Length: 23\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:04:52] ===== RESPONSE =====
+Cliente: 127.0.0.1:50636
+Backend: 127.0.0.1:5002
+Contenido:
+405 Method Not Allowed\n
+
+========================
+[2026-05-02 13:04:52] [INFO] Comunicacion completada correctamente
+[2026-05-02 13:07:55] [INFO] PIBL iniciado correctamente
+[2026-05-02 13:07:55] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 13:08:04] ===== REQUEST =====
+Cliente: 127.0.0.1:51210
+Backend: 127.0.0.1:5002
+Contenido:
+PUT /files/archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 13:08:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:51210
+Backend: 127.0.0.1:5002
+Contenido:
+HTTP/1.1 405 Method Not Allowed\r\n
+Content-Length: 23\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:08:04] ===== RESPONSE =====
+Cliente: 127.0.0.1:51210
+Backend: 127.0.0.1:5002
+Contenido:
+405 Method Not Allowed\n
+
+========================
+[2026-05-02 13:08:04] [INFO] Comunicacion completada correctamente
+[2026-05-02 13:09:38] [INFO] PIBL iniciado correctamente
+[2026-05-02 13:09:38] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 13:09:44] ===== REQUEST =====
+Cliente: 127.0.0.1:42308
+Backend: 127.0.0.1:5003
+Contenido:
+PUT /files/archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 13:09:44] ===== RESPONSE =====
+Cliente: 127.0.0.1:42308
+Backend: 127.0.0.1:5003
+Contenido:
+HTTP/1.1 400 Bad Request\r\n
+Content-Length: 16\r\n
+Content-Type: text/plain\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:09:44] ===== RESPONSE =====
+Cliente: 127.0.0.1:42308
+Backend: 127.0.0.1:5003
+Contenido:
+400 Bad Request\n
+
+========================
+[2026-05-02 13:09:44] [INFO] Comunicacion completada correctamente
