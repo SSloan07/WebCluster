@@ -117,7 +117,8 @@ int http_request_is_method_supported(const Request *request) {
            request->method == METHOD_HEAD ||
            request->method == METHOD_POST ||
            request->method == METHOD_PUT ||
-           request->method == METHOD_DELETE;
+           request->method == METHOD_DELETE ||
+           request->method == METHOD_TRACE;
 }
 
 void http_request_free(Request *request) {

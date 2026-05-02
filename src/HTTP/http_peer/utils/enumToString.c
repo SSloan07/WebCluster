@@ -6,6 +6,7 @@ const char *methodToString(HTTP_Method method){
     if(method == METHOD_HEAD) return "HEAD";
     if(method == METHOD_PUT) return "PUT";
     if(method == METHOD_DELETE) return "DELETE";
+    if(method == METHOD_TRACE) return "TRACE";
     return "UNKNOWN METHOD";
 }
 

@@ -9,7 +9,7 @@ HTTP_Method getHTTPMethod(const char *strMethod){
     if(strcmp(strMethod , "POST") == 0) return METHOD_POST;
     if(strcmp(strMethod , "PUT") == 0) return METHOD_PUT;
     if(strcmp(strMethod , "DELETE") == 0) return METHOD_DELETE;
-    // if(strcmp(strMethod , "TRACE") == 0) return METHOD_TRACE;
+    if(strcmp(strMethod , "TRACE") == 0) return METHOD_TRACE;
     // if(strcmp(strMethod , "CONNECT") == 0) return METHOD_CONNECT;
     // if(strcmp(strMethod , "OPTIONS") == 0) return METHOD_OPTIONS;
 

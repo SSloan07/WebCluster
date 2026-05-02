@@ -3533,3 +3533,240 @@ File created successfully\r\n
 
 ========================
 [2026-05-02 13:20:24] [INFO] Comunicacion completada correctamente
+[2026-05-02 13:37:08] [INFO] PIBL iniciado correctamente
+[2026-05-02 13:37:08] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 13:37:35] ===== REQUEST =====
+Cliente: 127.0.0.1:34984
+Backend: 127.0.0.1:5001
+Contenido:
+PUT /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 13:37:35] ===== RESPONSE =====
+Cliente: 127.0.0.1:34984
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 201 Created\r\n
+Content-Type: text/plain\r\n
+Content-Length: 27\r\n
+Location: /archivo.txt\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:37:35] ===== RESPONSE =====
+Cliente: 127.0.0.1:34984
+Backend: 127.0.0.1:5001
+Contenido:
+File created successfully\r\n
+
+========================
+[2026-05-02 13:37:35] [INFO] Comunicacion completada correctamente
+
+[2026-05-02 13:37:51] ===== REQUEST =====
+Cliente: 127.0.0.1:57510
+Backend: 127.0.0.1:5001
+Contenido:
+DELETE /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-05-02 13:37:51] ===== RESPONSE =====
+Cliente: 127.0.0.1:57510
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Content-Type: text/plain\r\n
+Content-Length: 27\r\n
+Connection: close\r\n
+\r\n
+File deleted successfully\r\n
+
+========================
+[2026-05-02 13:37:51] [INFO] Comunicacion completada correctamente
+
+[2026-05-02 13:39:39] ===== REQUEST =====
+Cliente: 127.0.0.1:46410
+Backend: 127.0.0.1:5001
+Contenido:
+PUT /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 13:39:39] ===== RESPONSE =====
+Cliente: 127.0.0.1:46410
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 201 Created\r\n
+Content-Type: text/plain\r\n
+Content-Length: 27\r\n
+Location: /archivo.txt\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:39:39] ===== RESPONSE =====
+Cliente: 127.0.0.1:46410
+Backend: 127.0.0.1:5001
+Contenido:
+File created successfully\r\n
+
+========================
+[2026-05-02 13:39:39] [INFO] Comunicacion completada correctamente
+
+[2026-05-02 13:39:48] ===== REQUEST =====
+Cliente: 127.0.0.1:46420
+Backend: 127.0.0.1:5001
+Contenido:
+DELETE /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-05-02 13:39:48] ===== RESPONSE =====
+Cliente: 127.0.0.1:46420
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Content-Type: text/plain\r\n
+Content-Length: 27\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:39:48] ===== RESPONSE =====
+Cliente: 127.0.0.1:46420
+Backend: 127.0.0.1:5001
+Contenido:
+File deleted successfully\r\n
+
+========================
+[2026-05-02 13:39:48] [INFO] Comunicacion completada correctamente
+
+[2026-05-02 13:39:54] ===== REQUEST =====
+Cliente: 127.0.0.1:47644
+Backend: 127.0.0.1:5001
+Contenido:
+PUT /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 13:39:54] ===== RESPONSE =====
+Cliente: 127.0.0.1:47644
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 201 Created\r\n
+Content-Type: text/plain\r\n
+Content-Length: 27\r\n
+Location: /archivo.txt\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:39:54] ===== RESPONSE =====
+Cliente: 127.0.0.1:47644
+Backend: 127.0.0.1:5001
+Contenido:
+File created successfully\r\n
+
+========================
+[2026-05-02 13:39:54] [INFO] Comunicacion completada correctamente
+
+[2026-05-02 13:39:56] ===== REQUEST =====
+Cliente: 127.0.0.1:47648
+Backend: 127.0.0.1:5001
+Contenido:
+PUT /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Content-Type: text/plain\r\n
+Content-Length: 10\r\n
+\r\n
+Hola mundo
+=======================
+
+[2026-05-02 13:39:56] ===== RESPONSE =====
+Cliente: 127.0.0.1:47648
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Content-Type: text/plain\r\n
+Content-Length: 27\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:39:56] ===== RESPONSE =====
+Cliente: 127.0.0.1:47648
+Backend: 127.0.0.1:5001
+Contenido:
+File updated successfully\r\n
+
+========================
+[2026-05-02 13:39:56] [INFO] Comunicacion completada correctamente
+
+[2026-05-02 13:40:05] ===== REQUEST =====
+Cliente: 127.0.0.1:54874
+Backend: 127.0.0.1:5001
+Contenido:
+DELETE /archivo.txt HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-05-02 13:40:05] ===== RESPONSE =====
+Cliente: 127.0.0.1:54874
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Content-Type: text/plain\r\n
+Content-Length: 27\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-02 13:40:05] ===== RESPONSE =====
+Cliente: 127.0.0.1:54874
+Backend: 127.0.0.1:5001
+Contenido:
+File deleted successfully\r\n
+
+========================
+[2026-05-02 13:40:05] [INFO] Comunicacion completada correctamente

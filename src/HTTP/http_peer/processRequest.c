@@ -3,6 +3,7 @@
 #include "methods/get.h"
 #include "methods/head.h"
 #include "methods/post.h"
+#include "methods/trace.h"
 #include "methods/put.h"
 
 #include <stdio.h>
@@ -31,7 +32,7 @@ HTTP_Status http_peer_process_request(Request *req, HTTP_Response *res) {
             return HTTPDelete(req, res);
 
         case METHOD_TRACE:
-            break;
+            return HTTPTrace(req, res);
 
         case METHOD_CONNECT:
             break;
