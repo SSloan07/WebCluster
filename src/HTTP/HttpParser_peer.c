@@ -120,7 +120,126 @@ int http_request_is_method_supported(const Request *request) {
            request->method == METHOD_PUT ||
            request->method == METHOD_DELETE ||
            request->method == METHOD_TRACE ||
-           request->method == METHOD_CONNECT;
+           request->method == METHOD_CONNECT ||
+           request->method == METHOD_OPTIONS;
+}
+
+int http_request_decrement_max_forwards(Request *request) {
+    Request_Header *header;
+    char *endptr;
+    long parsed_value;
+    char new_value[32];
+    char *value_copy;
+
+    if (request == NULL || request->headerList == NULL) {
+        return -1;
+    }
+
+    header = searchHeader(request->headerList, HEADER_MAX_FORWARDS);
+    if (header == NULL || header->value == NULL) {
+        return -1;
+    }
+
+    parsed_value = strtol(header->value, &endptr, 10);
+    if (*endptr != '\0' || parsed_value <= 0) {
+        return -1;
+    }
+
+    snprintf(new_value, sizeof(new_value), "%ld", parsed_value - 1);
+    value_copy = strdup(new_value);
+    if (value_copy == NULL) {
+        return -1;
+    }
+
+    free(header->value);
+    header->value = value_copy;
+    return 0;
+}
+
+char *http_request_to_raw(const Request *request, size_t *out_len) {
+    size_t total_size = 0;
+    char *raw_request;
+    size_t offset = 0;
+    int written;
+
+    if (request == NULL || request->requestURI == NULL || request->headerList == NULL || out_len == NULL) {
+        return NULL;
+    }
+
+    total_size += strlen(methodToString(request->method)) + 1;
+    total_size += strlen(request->requestURI) + 1;
+    total_size += strlen(versionToString(request->httpVersion)) + 2;
+
+    for (size_t i = 0; i < request->headerList->count; i++) {
+        const char *header_name = request->headerList->headers[i].name;
+
+        if (header_name == NULL) {
+            header_name = headerToString(request->headerList->headers[i].type);
+        }
+
+        total_size += strlen(header_name) + 2;
+        total_size += strlen(request->headerList->headers[i].value) + 2;
+    }
+
+    total_size += 2;
+    total_size += request->bodyLength;
+    total_size += 1;
+
+    raw_request = malloc(total_size);
+    if (raw_request == NULL) {
+        return NULL;
+    }
+
+    written = snprintf(
+        raw_request + offset,
+        total_size - offset,
+        "%s %s %s\r\n",
+        methodToString(request->method),
+        request->requestURI,
+        versionToString(request->httpVersion)
+    );
+    if (written < 0 || (size_t) written >= total_size - offset) {
+        free(raw_request);
+        return NULL;
+    }
+    offset += (size_t) written;
+
+    for (size_t i = 0; i < request->headerList->count; i++) {
+        const char *header_name = request->headerList->headers[i].name;
+
+        if (header_name == NULL) {
+            header_name = headerToString(request->headerList->headers[i].type);
+        }
+
+        written = snprintf(
+            raw_request + offset,
+            total_size - offset,
+            "%s: %s\r\n",
+            header_name,
+            request->headerList->headers[i].value
+        );
+        if (written < 0 || (size_t) written >= total_size - offset) {
+            free(raw_request);
+            return NULL;
+        }
+        offset += (size_t) written;
+    }
+
+    written = snprintf(raw_request + offset, total_size - offset, "\r\n");
+    if (written < 0 || (size_t) written >= total_size - offset) {
+        free(raw_request);
+        return NULL;
+    }
+    offset += (size_t) written;
+
+    if (request->body != NULL && request->bodyLength > 0) {
+        memcpy(raw_request + offset, request->body, request->bodyLength);
+        offset += request->bodyLength;
+    }
+
+    raw_request[offset] = '\0';
+    *out_len = offset;
+    return raw_request;
 }
 
 int parse_request_connect(

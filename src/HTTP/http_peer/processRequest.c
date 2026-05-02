@@ -2,6 +2,7 @@
 #include "methods/delete.h"
 #include "methods/get.h"
 #include "methods/head.h"
+#include "methods/options.h"
 #include "methods/post.h"
 #include "methods/trace.h"
 #include "methods/put.h"
@@ -34,11 +35,8 @@ HTTP_Status http_peer_process_request(Request *req, HTTP_Response *res) {
         case METHOD_TRACE:
             return HTTPTrace(req, res);
 
-        case METHOD_CONNECT:
-            break;
-
         case METHOD_OPTIONS:
-            break;
+            return HTTPOptions(req, res);
 
         default:
             return STATUS_400;

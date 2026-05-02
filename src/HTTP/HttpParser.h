@@ -39,6 +39,8 @@ HTTP_Status processRequest(Request *req, HTTP_Response *res);
 void http_request_free(Request *request);
 void http_response_free(HTTP_Response *response);
 int http_request_is_method_supported(const Request *request);
+int http_request_decrement_max_forwards(Request *request);
+char *http_request_to_raw(const Request *request, size_t *out_len);
 int parse_request_connect(
     const char *request_uri,
     char *ip_out,

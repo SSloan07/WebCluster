@@ -7,6 +7,7 @@
 #include "../src/HTTP/HttpParser.h"
 #include "../src/HTTP/http_peer/utils/enumToString.h"
 #include "../src/cache/Manage_cache.h"
+#include "manage_client_utils.h"
 #include "thread_args.h"
 #include <pthread.h>
 #include <stdio.h>
@@ -21,33 +22,6 @@
 #define CYAN  "\033[36m"
 #define BLUE  "\033[94m"
 #define RESET "\033[0m"
-
-/* Lee un archivo cacheado y lo envia completo al cliente. */
-static int send_cached_response(net_socket_t *client_sock, const char *file_path) {
-    FILE *cache_file;
-    char buffer[BUFFER_SIZE];
-    size_t bytes_read;
-    int read_error = 0;
-
-    cache_file = fopen(file_path, "rb");
-    if (cache_file == NULL) {
-        return -1;
-    }
-
-    while ((bytes_read = fread(buffer, 1, sizeof(buffer), cache_file)) > 0) {
-        if (tcp_send_all(client_sock->fd, buffer, bytes_read) < 0) {
-            fclose(cache_file);
-            return -1;
-        }
-    }
-
-    if (ferror(cache_file)) {
-        read_error = 1;
-    }
-
-    fclose(cache_file);
-    return read_error ? -1 : 0;
-}
 
 void *manage_client(void *arg) {
     thread_args_t *args = (thread_args_t *) arg;
@@ -65,7 +39,11 @@ void *manage_client(void *arg) {
     http_parse_result_t parse_result = HTTP_PARSE_ERROR;
     int should_cache_response = 0;
     char *response_buffer = NULL;
+    char *forward_request_buffer = NULL;
     size_t response_size = 0;
+    const char *request_data_to_send = buffer;
+    size_t request_size_to_send = 0;
+    options_flow_result_t options_result = OPTIONS_FLOW_CONTINUE;
 
     printf(CYAN "[CONEXION] Cliente conectado desde %s:%d\n" RESET,
            client_sock->ip_in, client_sock->port_in);
@@ -83,18 +61,12 @@ void *manage_client(void *arg) {
 
     if (parse_result != HTTP_PARSE_OK) {
         printf(RED "[HTTP] Error al parsear la peticion HTTP.\n" RESET);
-        tcp_send_all(
-            client_sock->fd,
+        send_simple_http_response(
+            client_sock,
             "HTTP/1.1 400 Bad Request\r\n"
             "Content-Length: 0\r\n"
             "Connection: close\r\n"
-            "\r\n",
-            strlen(
-                "HTTP/1.1 400 Bad Request\r\n"
-                "Content-Length: 0\r\n"
-                "Connection: close\r\n"
-                "\r\n"
-            )
+            "\r\n"
         );
         tcp_close(client_sock);
         free(args);
@@ -110,20 +82,16 @@ void *manage_client(void *arg) {
         printf(CYAN "[HTTP] Host: %s\n" RESET, host);
     }
 
+    request_size_to_send = (size_t) bytes_received;
+
     if (!http_request_is_method_supported(&request)) {
         printf(RED "[HTTP] Metodo no soportado por el proyecto.\n" RESET);
-        tcp_send_all(
-            client_sock->fd,
+        send_simple_http_response(
+            client_sock,
             "HTTP/1.1 405 Method Not Allowed\r\n"
             "Content-Length: 0\r\n"
             "Connection: close\r\n"
-            "\r\n",
-            strlen(
-                "HTTP/1.1 405 Method Not Allowed\r\n"
-                "Content-Length: 0\r\n"
-                "Connection: close\r\n"
-                "\r\n"
-            )
+            "\r\n"
         );
         http_request_free(&request);
         tcp_close(client_sock);
@@ -131,8 +99,31 @@ void *manage_client(void *arg) {
         return NULL;
     }
 
-    if (request.method == METHOD_CONNECT) { // Manejo especial para CONNECT, no se balancea ni cachea, se crea tunel directo al backend indicado en el URI. 
+    if (request.method == METHOD_CONNECT) {
         tcp_handle_connect(client_sock, request.requestURI);
+        http_request_free(&request);
+        tcp_close(client_sock);
+        free(args);
+        return NULL;
+    }
+
+    options_result = handle_options_request(
+        client_sock,
+        &request,
+        &request,
+        &forward_request_buffer,
+        &request_data_to_send,
+        &request_size_to_send
+    );
+
+    if (options_result == OPTIONS_FLOW_ERROR) {
+        http_request_free(&request);
+        tcp_close(client_sock);
+        free(args);
+        return NULL;
+    }
+
+    if (options_result == OPTIONS_FLOW_FINISH) {
         http_request_free(&request);
         tcp_close(client_sock);
         free(args);
@@ -152,6 +143,7 @@ void *manage_client(void *arg) {
         printf(RED "[ERROR] No hay backend disponible.\n" RESET);
         logger_error("No hay backend disponible");
         http_request_free(&request);
+        free(forward_request_buffer);
         tcp_close(client_sock);
         free(args);
         return NULL;
@@ -167,8 +159,8 @@ void *manage_client(void *arg) {
         client_sock->port_in,
         target_server->ip,
         target_server->port,
-        buffer,
-        (size_t) bytes_received
+        request_data_to_send,
+        request_size_to_send
     );
 
     memset(cache_key, 0, sizeof(cache_key));
@@ -192,6 +184,7 @@ void *manage_client(void *arg) {
                     printf(GREEN "[CACHE] Respuesta enviada desde cache, sin contactar backend.\n" RESET);
                     logger_info("Respuesta servida desde cache");
                     http_request_free(&request);
+                    free(forward_request_buffer);
                     tcp_close(client_sock);
                     free(args);
                     return NULL;
@@ -220,15 +213,17 @@ void *manage_client(void *arg) {
         printf(RED "[ERROR] No se pudo conectar al backend.\n" RESET);
         logger_error("No se pudo conectar al backend seleccionado");
         http_request_free(&request);
+        free(forward_request_buffer);
         tcp_close(client_sock);
         free(args);
         return NULL;
     }
 
-    if (tcp_send_all(backend_sock->fd, buffer, (size_t) bytes_received) < 0) {
+    if (tcp_send_all(backend_sock->fd, request_data_to_send, request_size_to_send) < 0) {
         printf(RED "[ERROR] Fallo el envio hacia el backend.\n" RESET);
         logger_error("Fallo el envio hacia el backend");
         http_request_free(&request);
+        free(forward_request_buffer);
         tcp_close(backend_sock);
         tcp_close(client_sock);
         free(args);
@@ -287,6 +282,7 @@ void *manage_client(void *arg) {
     }
 
     free(response_buffer);
+    free(forward_request_buffer);
     http_request_free(&request);
     tcp_close(backend_sock);
     tcp_close(client_sock);

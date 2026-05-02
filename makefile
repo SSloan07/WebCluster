@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -I./src/Network -I./src/Proxy -I./ManageClient -I./Config
 OBJ_NET = src/Network/tcp.o
 OBJ_CONNECT = src/Network/connect_tunnel.o
 OBJ_PROXY = src/Proxy/Cluster.o src/Proxy/RoundRobin.o src/Proxy/Logger.o
-OBJ_MANAGE = ManageClient/manage_client.o
+OBJ_MANAGE = ManageClient/manage_client.o ManageClient/manage_client_utils.o
 OBJ_CONFIG = Configuration/config.o
 OBJ_CACHE = src/cache/Manage_cache.o src/cache/utils/cache_utils.o
 OBJ_HTTP_PROXY = \
@@ -18,6 +18,7 @@ OBJ_HTTP_PROXY = \
 	src/HTTP/http_peer/methods/put.o \
 	src/HTTP/http_peer/methods/delete.o \
 	src/HTTP/http_peer/methods/trace.o \
+	src/HTTP/http_peer/methods/options.o \
 	src/HTTP/http_peer/requestParser.o \
 	src/HTTP/http_peer/utils/readFile.o \
 	src/HTTP/http_peer/utils/getDate.o \

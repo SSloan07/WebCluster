@@ -3811,3 +3811,31 @@ Accept: */*\r\n
 [2026-05-02 14:07:00] [INFO] Comunicacion completada correctamente
 [2026-05-02 15:58:29] [INFO] PIBL iniciado correctamente
 [2026-05-02 15:58:29] [INFO] Archivo de configuracion cargado correctamente
+[2026-05-02 18:11:48] [INFO] PIBL iniciado correctamente
+[2026-05-02 18:11:48] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-02 18:12:51] ===== REQUEST =====
+Cliente: 127.0.0.1:36826
+Backend: 127.0.0.1:5001
+Contenido:
+OPTIONS /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+Max-Forwards: 1\r\n
+\r\n
+
+=======================
+
+[2026-05-02 18:12:51] ===== RESPONSE =====
+Cliente: 127.0.0.1:36826
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Allow: GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT, OPTIONS\r\n
+Content-Length: 0\r\n
+Connection: close\r\n
+\r\n
+
+========================
+[2026-05-02 18:12:51] [INFO] Comunicacion completada correctamente
