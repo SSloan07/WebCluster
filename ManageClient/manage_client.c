@@ -22,6 +22,7 @@
 #define CYAN  "\033[36m"
 #define BLUE  "\033[94m"
 #define RESET "\033[0m"
+ 
 
 void *manage_client(void *arg) {
     thread_args_t *args = (thread_args_t *) arg;
@@ -44,6 +45,9 @@ void *manage_client(void *arg) {
     const char *request_data_to_send = buffer;
     size_t request_size_to_send = 0;
     options_flow_result_t options_result = OPTIONS_FLOW_CONTINUE;
+    int should_invalidate_cache = 0;
+    int backend_status_code = -1;
+    int backend_status_parsed = 0;
 
     printf(CYAN "[CONEXION] Cliente conectado desde %s:%d\n" RESET,
            client_sock->ip_in, client_sock->port_in);
@@ -205,7 +209,13 @@ void *manage_client(void *arg) {
             printf(RED "[CACHE] Error al construir la clave de cache.\n" RESET);
         }
     } else {
-        printf(BLUE "[CACHE] La peticion no es cacheable.\n" RESET);
+        if (request.method == METHOD_PUT || request.method == METHOD_DELETE) {
+            should_invalidate_cache = 1;
+            printf(BLUE "[CACHE] La peticion es de tipo %s. Se invalidara la cache asociada si la respuesta del backend no es de error.\n" RESET,
+                   methodToString(request.method));
+        } else {
+            printf(BLUE "[CACHE] La peticion no es cacheable segun las reglas definidas.\n" RESET);
+        }
     }
 
     backend_sock = tcp_connect(target_server->ip, target_server->port);
@@ -234,6 +244,14 @@ void *manage_client(void *arg) {
 
     ssize_t bytes_backend;
     while ((bytes_backend = tcp_recv(backend_sock->fd, buffer, sizeof(buffer))) > 0) {
+        if (!backend_status_parsed) {
+            backend_status_code = parse_backend_status_code(buffer, (size_t) bytes_backend);
+            if (backend_status_code >= 100) {
+                backend_status_parsed = 1;
+                printf(BLUE "[HTTP] Backend respondio con estado %d.\n" RESET, backend_status_code);
+            }
+        }
+
         logger_response(
             client_sock->ip_in,
             client_sock->port_in,
@@ -271,6 +289,46 @@ void *manage_client(void *arg) {
     } else {
         printf(GREEN "[PROXY] Comunicacion completada correctamente.\n" RESET);
         logger_info("Comunicacion completada correctamente");
+
+        if (should_invalidate_cache) {
+            if (backend_status_parsed && backend_status_code < 400) {
+                Request key_request = request;
+                cache_result_t delete_result;
+
+                key_request.method = METHOD_GET;
+                if (http_build_cache_key(&key_request, cache_key, sizeof(cache_key)) == CACHE_SUCCESS) {
+                    delete_result = cache_delete(cache_store, cache_key);
+                    if (delete_result == CACHE_SUCCESS) {
+                        printf(GREEN "[CACHE] Entrada GET invalidada correctamente.\n" RESET);
+                    } else if (delete_result == CACHE_NOT_FOUND) {
+                        printf(BLUE "[CACHE] No habia entrada GET para invalidar.\n" RESET);
+                    } else {
+                        printf(RED "[CACHE] No se pudo invalidar la entrada GET para la clave: %s\n" RESET, cache_key);
+                    }
+                } else {
+                    printf(RED "[CACHE] Error al construir la clave GET para invalidacion.\n" RESET);
+                }
+
+                key_request.method = METHOD_HEAD;
+                if (http_build_cache_key(&key_request, cache_key, sizeof(cache_key)) == CACHE_SUCCESS) {
+                    delete_result = cache_delete(cache_store, cache_key);
+                    if (delete_result == CACHE_SUCCESS) {
+                        printf(GREEN "[CACHE] Entrada HEAD invalidada correctamente.\n" RESET);
+                    } else if (delete_result == CACHE_NOT_FOUND) {
+                        printf(BLUE "[CACHE] No habia entrada HEAD para invalidar.\n" RESET);
+                    } else {
+                        printf(RED "[CACHE] No se pudo invalidar la entrada HEAD para la clave: %s\n" RESET, cache_key);
+                    }
+                } else {
+                    printf(RED "[CACHE] Error al construir la clave HEAD para invalidacion.\n" RESET);
+                }
+            } else if (backend_status_parsed) {
+                printf(BLUE "[CACHE] No se invalido cache porque el backend respondio con error HTTP %d.\n" RESET,
+                       backend_status_code);
+            } else {
+                printf(BLUE "[CACHE] No se pudo determinar el estado HTTP del backend; no se invalido cache por seguridad.\n" RESET);
+            }
+        }
 
         if (should_cache_response && response_buffer != NULL && response_size > 0) {
             if (cache_save(cache_store, cache_key, response_buffer, response_size) == CACHE_SUCCESS) {

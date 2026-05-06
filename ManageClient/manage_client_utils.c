@@ -139,3 +139,27 @@ options_flow_result_t handle_options_request(
     *request_data_to_send = *forward_request_buffer;
     return OPTIONS_FLOW_CONTINUE;
 }
+
+int parse_backend_status_code(const char *buffer, size_t len) {
+    char status_line[128];
+    size_t i;
+    int status_code;
+
+    if (buffer == NULL || len == 0) {
+        return -1;
+    }
+
+    for (i = 0; i < len && i + 1 < sizeof(status_line); i++) {
+        if (buffer[i] == '\r' || buffer[i] == '\n') {
+            break;
+        }
+        status_line[i] = buffer[i];
+    }
+    status_line[i] = '\0';
+
+    if (sscanf(status_line, "HTTP/%*s %d", &status_code) != 1) {
+        return -1;
+    }
+
+    return status_code;
+}

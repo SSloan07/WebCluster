@@ -22,4 +22,6 @@ options_flow_result_t handle_options_request(
     size_t *request_size_to_send
 );
 
+int parse_backend_status_code(const char *buffer, size_t len);
+
 #endif
