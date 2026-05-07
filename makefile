@@ -29,7 +29,7 @@ OBJ_HTTP_PROXY = \
 
 OBJ_SERV = $(OBJ_NET) $(OBJ_CONNECT) $(OBJ_PROXY) $(OBJ_MANAGE) $(OBJ_CONFIG) $(OBJ_CACHE) $(OBJ_HTTP_PROXY)
 
-all: servidor cliente backend http_test
+all: servidor cliente backend
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -47,4 +47,4 @@ clean:
 	rm -f $(OBJ_NET) $(OBJ_CONNECT) $(OBJ_PROXY) $(OBJ_MANAGE) $(OBJ_CONFIG) $(OBJ_CACHE) $(OBJ_HTTP_PROXY) servidor cliente backend
 	@echo "Limpieza completada."
 
-.PHONY: all clean run_http_test
+.PHONY: all clean
