@@ -42,4 +42,4 @@ clean:
 	rm -f $(OBJ_NET) $(OBJ_CONNECT) $(OBJ_PROXY) $(OBJ_MANAGE) $(OBJ_CONFIG) $(OBJ_CACHE) $(OBJ_HTTP_PROXY) $(OBJ_ENTRY) servidor
 	@echo "Limpieza completada."
 
-.PHONY: all clean run_http_test
+.PHONY: all clean

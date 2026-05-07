@@ -9,11 +9,11 @@ int socket_creation(){
     int fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (fd == -1){
-        printf("Error creating socket");
+        printf("\nError creating socket\n");
         return fd;
     }
 
-    printf("Succesfully socket creation");
+    printf("\nSuccesfully socket creation\n");
     return fd;
 }
 
@@ -36,13 +36,13 @@ int tcp_create_server(const char *ip, int port, int backlog){
     struct sockaddr_in server_addr = configure_addr(ip, port);
 
     if (bind(fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-        perror("Bind failed. Ojo a pesar de que si se creó el socket, no se pudo vincular a la red real ");
+        perror("\nBind failed. Ojo a pesar de que si se creó el socket, no se pudo vincular a la red real\n");
         close(fd);
         return -1;
     }
 
     if (listen(fd, backlog) < 0) {
-        perror("Listen failed");
+        perror("\nListen failed\n");
         close(fd);
         return -1;
     }
@@ -56,7 +56,7 @@ net_socket_t* tcp_accept(int fd_server) {
 
     int client_fd = accept(fd_server, (struct sockaddr *)&client_addr, &addr_len);
     if (client_fd < 0) {
-        printf("Mijo, hubo errores creando el socket del cliente\n");
+        printf("\nMijo, hubo errores creando el socket del cliente\n");
         return NULL;
     }
 
@@ -79,14 +79,14 @@ net_socket_t* tcp_accept(int fd_server) {
 net_socket_t* tcp_connect (const char *ip, int port){
     int fd = socket_creation();
     if (fd == -1){
-        printf("Hubo error al conectarse al crear el file descriptor del lado del cliente");
+        printf("\nHubo error al conectarse al crear el file descriptor del lado del cliente\n");
         return NULL;
     }
 
     struct sockaddr_in server_addr = configure_addr(ip,port);
 
     if (connect(fd, (struct sockaddr *)&server_addr, sizeof(server_addr))){
-        printf("Error al conectarse al server del lado del cliente");
+        printf("\nError al conectarse al server del lado del cliente\n");
         close(fd);
         return NULL;
     }
@@ -94,7 +94,7 @@ net_socket_t* tcp_connect (const char *ip, int port){
     net_socket_t *sock_info = malloc(sizeof(net_socket_t));
 
     if (sock_info == NULL){
-        printf("No se inicializó la estructura de socket");
+        printf("\nNo se inicializó la estructura de socket\n");
         close(fd);
         return NULL;
     }
@@ -106,7 +106,7 @@ net_socket_t* tcp_connect (const char *ip, int port){
     sock_info->ip_in = NULL;
     sock_info->port_in = 0;
 
-    printf("Muy berraco, se conectó al server");
+    printf("\nMuy berraco, se conectó al server\n");
 
     return sock_info;
 }
@@ -130,7 +130,7 @@ void tcp_close (net_socket_t *sock){
 
     free(sock);
 
-    printf("Socket Liberated. Siuuu");
+    printf("\nSocket Liberated. Siuuu\n");
 }
 
 ssize_t tcp_send_all(int fd, const void *buf, size_t len){
@@ -141,7 +141,7 @@ ssize_t tcp_send_all(int fd, const void *buf, size_t len){
     while (total_sent < len){
         ssize_t sent = send(fd,p+total_sent,len - total_sent, 0);
         if (sent == -1){
-            printf ("Hubo un error enviando un segmento");
+            printf ("\nHubo un error enviando un segmento\n");
             return -1;
         }
 
@@ -156,15 +156,15 @@ ssize_t tcp_recv(int fd, void *buf, size_t len) {
     ssize_t bytes_read = recv(fd, buf, len, 0);
 
     if (bytes_read == -1) {
-        perror("Ni siquiera llegó el archivo");
+        perror("\nNi siquiera llegó el archivo\n");
         return -1;
     }
 
     if (bytes_read == 0) {
-        printf("El otro lado cerró la conexión\n");
+        printf("\nEl otro lado cerró la conexión\n");
         return 0;
     }
 
-    printf("Se recibieron %zd bytes.\n", bytes_read);
+    printf("\nSe recibieron %zd bytes.\n", bytes_read);
     return (ssize_t)bytes_read;
 }
