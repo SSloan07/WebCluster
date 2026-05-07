@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 HTTP_Status HTTPHead(Request *req , HTTP_Response *res) {
-    // Sacar la ruta por defecto (/index.html)
+    // Resolve the default path (/index.html)
     if(strcmp(req->requestURI , "/") == 0){
         char *defaultURI = "/index.html";
 
@@ -15,7 +15,7 @@ HTTP_Status HTTPHead(Request *req , HTTP_Response *res) {
         strcpy(req->requestURI, defaultURI);
     }
 
-    // Leer el contenido y sacar el tamaño
+    // Read the content and obtain its size
     size_t contentSize;
     char *content = readFile(req->requestURI , &contentSize);
     if(content == NULL) return STATUS_404;
@@ -23,27 +23,27 @@ HTTP_Status HTTPHead(Request *req , HTTP_Response *res) {
     res->content = NULL;
     res->contentLength = contentSize;
 
-    // Añadir headers
+    // Add headers
     const char *date = "Date";
     const char *contentLength = "Content-Length";
     const char *contentType = "Content-Type";
     const char *server = "Server";
 
-    // Fecha
+    // Date
     char buffer[64];
     size_t bufferSize = sizeof(buffer);
     getDate(buffer , bufferSize);
     addResponseHeader(res->headerList , date , buffer);
 
-    // Bytes del archivo
+    // File size in bytes
     char contentLengthStr[32];
     snprintf(contentLengthStr , sizeof(contentLengthStr) , "%zu", res->contentLength);
     addResponseHeader(res->headerList , contentLength , contentLengthStr);
 
-    // Tipo de archivo
+    // File type
     addResponseHeader(res->headerList , contentType , getContentType(req->requestURI));
 
-    // Servidor
+    // Server
     addResponseHeader(res->headerList , server , "El server de los mas papus");
     
     return STATUS_200;

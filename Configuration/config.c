@@ -35,8 +35,8 @@ int load_config(const char *filename, proxy_config_t *config) {
         return -1;
     }
 
-    config->proxy_port = 8080;   // valor por defecto
-    config->cache_ttl = 60;      // valor por defecto
+    config->proxy_port = 8080;   // default value
+    config->cache_ttl = 60;      // default value
     config->backend_count = 0;
 
     char line[256];
@@ -44,7 +44,7 @@ int load_config(const char *filename, proxy_config_t *config) {
     while (fgets(line, sizeof(line), file) != NULL) {
         trim_whitespace(line);
 
-        // Ignorar líneas vacías o comentarios
+        // Ignore empty lines or comments
         if (line[0] == '\0' || line[0] == '#') {
             continue;
         }
@@ -94,7 +94,7 @@ int load_config(const char *filename, proxy_config_t *config) {
             config->backend_count++;
         }
         else {
-            // línea desconocida -> error
+            // unknown line -> error
             fclose(file);
             return -1;
         }

@@ -3,10 +3,10 @@
 #include "http_peer/utils/readFile.h"
 
 /*
- * Fachada publica del modulo HTTP.
- * Las funciones de parseo siguen viviendo en HttpParser_peer.c.
- * Esta unidad expone wrappers para que el resto del proyecto dependa
- * de src/HTTP y no directamente de http_peer.
+ * Public facade of the HTTP module.
+ * The parsing functions still live in HttpParser_peer.c.
+ * This unit exposes wrappers so the rest of the project depends on
+ * src/HTTP rather than directly on http_peer.
  */
 
 HTTP_Status processRequest(Request *req, HTTP_Response *res) {

@@ -280,7 +280,7 @@ int parse_request_connect(
         return -1;
     }
 
-    if (inet_pton(AF_INET, ip_out, &ipv4_addr) != 1) { //internet presentation to network address, valida que la ip sea correcta
+    if (inet_pton(AF_INET, ip_out, &ipv4_addr) != 1) { // Validates that the IP address is correct
         return -1;
     }
 

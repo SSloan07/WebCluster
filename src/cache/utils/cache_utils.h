@@ -4,25 +4,25 @@
 #include "../cacheTypes.h"
 #include <stddef.h>
 
-// Genera un hash simple y estable para convertir la cache_key en nombre de archivo.
+// Generates a simple and stable hash to turn the cache key into a file name.
 unsigned long cache_hash_key(const char *text);
 
-// Crea el directorio de cache si no existe y valida que realmente sea un directorio. 
+// Creates the cache directory if it does not exist and validates that it is actually a directory.
 int ensure_cache_directory(const char *cache_dir);
 
-// Crea el archivo indice si todavia no existe. 
+// Creates the index file if it does not exist yet.
 int ensure_index_file(const char *index_path);
 
-// Guarda la respuesta HTTP completa en disco
+// Stores the full HTTP response on disk.
 int write_cache_file(const char *file_path, const char *response_data, size_t response_size);
 
-// Convierte una linea del indice al struct cache_entry_t.
+// Converts one index line into a cache_entry_t struct.
 int parse_index_line(const char *line, cache_entry_t *entry);
 
-// Reescribe el indice usando un archivo temporal para eliminar una clave o entradas expiradas.
+// Rewrites the index using a temporary file to remove a key or expired entries.
 int rewrite_index(cache_store_t *store, const char *cache_key, int remove_expired_only, int *removed_any);
 
-// Hilo en segundo plano que ejecuta limpieza activa periodicamente.
+// Background thread that periodically performs active cleanup.
 void *cache_cleaner_thread(void *arg);
 
 #endif

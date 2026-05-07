@@ -2,6 +2,6 @@
 #include "HttpTypes.h"
 
 /*
- * Archivo legacy conservado para pruebas y compatibilidad.
- * No contiene lógica activa: la implementación oficial está en HttpParser_peer.c.
+ * Legacy file kept for testing and compatibility.
+ * It contains no active logic: the official implementation is in HttpParser_peer.c.
  */

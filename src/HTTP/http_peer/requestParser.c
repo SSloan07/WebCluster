@@ -15,11 +15,11 @@ int parseRequestLine(const char *rawRequestLine , size_t rawLength, Request *req
     int count = 0;
     size_t lastLetter = 0;
 
-    // Parsear todos los espacios en blanco y mirar que espacio corresponde a que parte del request
+    // Parse all blank spaces and determine which separator belongs to each part of the request
     for(size_t i = 0 ; i < rawLength ; i++){
         
-        // Movemos el puntero i+1 veces (Ya que i es el espacio que separa entre expresiones)
-        // Al hacer rawRequestLine + lastLetter estamos moviendo lastLetter veces el puntero para que apunte a la ultima letra encontrada
+        // Move the pointer i+1 times (since i is the separator between expressions)
+        // rawRequestLine + lastLetter moves the pointer lastLetter positions so it points to the last character found
         if(rawRequestLine[i] == ' ' && count == 0){
 
             size_t length = i - lastLetter;
@@ -27,7 +27,7 @@ int parseRequestLine(const char *rawRequestLine , size_t rawLength, Request *req
 
             if(length >= sizeof(tempMethod) || length == 0) return -1;
 
-            memcpy(tempMethod, rawRequestLine + lastLetter , length); //memcpy(destino , origen , cantidad de bytes a copiar)
+            memcpy(tempMethod, rawRequestLine + lastLetter , length); // memcpy(destination, source, number of bytes to copy)
             tempMethod[length] = '\0';
             req->method = getHTTPMethod(tempMethod);
             
@@ -137,28 +137,28 @@ int parseHeaders(const char *rawRequestLine, size_t rawLength, Request *req, siz
 
 int parseBody(const char *rawRequest, size_t rawLength , Request *req , size_t *position) {
 
-    if(req->method != METHOD_POST && req->method != METHOD_PUT) return -1; // Solo POST y PUT manejan body aqui
+    if(req->method != METHOD_POST && req->method != METHOD_PUT) return -1; // Only POST and PUT handle a body here
 
-    if(*position >= rawLength) return -1; // No hay body
+    if(*position >= rawLength) return -1; // There is no body
 
     Request_Header *headerLength = searchHeader(req->headerList , HEADER_CONTENT_LENGTH);
 
-    if(headerLength == NULL) return -1; // No existe el header
+    if(headerLength == NULL) return -1; // The header does not exist
     
-    // Pasar de char a size_t para saber que tanto debemos leer
+    // Convert from char to size_t to know how much we need to read
     char *end;
-    errno = 0; // Buena practica
+    errno = 0; // Good practice
 
     unsigned long value = strtoul(headerLength->value , &end , 10);
 
-    if(end == headerLength->value) return -1; // Si ambos apuntan a la misma direccion, no se trasnformo nada
+    if(end == headerLength->value) return -1; // If both point to the same address, nothing was converted
     if(errno != 0) return -1;
 
     size_t bodyLength = (size_t)value;
     // -----------------------------
 
     if(bodyLength == 0) return 0;
-    if( (rawLength - *position) < bodyLength) return -1; // El content length lo mandaron mal
+    if( (rawLength - *position) < bodyLength) return -1; // The provided Content-Length is incorrect
 
     req->body = malloc(bodyLength);
     if (req->body == NULL) return -1;

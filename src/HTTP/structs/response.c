@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h> // Para malloc y free
+#include <stdlib.h> // For malloc and free
 
 void printResponse(HTTP_Response *res) {
     char headerBuffer[4096];
@@ -30,7 +30,7 @@ void printResponse(HTTP_Response *res) {
     
     printf("\n\n%s", headerBuffer);
     if (res->content != NULL) {
-        // Con fwrite para que funcione con binarios
+        // Use fwrite so it also works with binary content
         fwrite(res->content, 1, res->contentLength, stdout);
     }
 }
@@ -59,8 +59,8 @@ int addResponseHeader(Response_HeaderList *list , const char *name , const char 
     if(list == NULL) return -1;
     if(list->count >= MAX_HEADERS) return -1;
 
-    // Crear una copia de estos, por si *name o *value cambian o desaparecen en un siguiente request
-    // Aqui se hace un malloc y un strcpy
+    // Create a copy in case *name or *value change or disappear in a later request
+    // This allocates memory and copies the strings
     char *nameCopy = strdup(name);
     char *valueCopy = strdup(value);
 

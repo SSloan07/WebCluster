@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-// Construye una clave unica con metodo + host + URI. 
+// Builds a unique key using method + host + URI.
 cache_result_t http_build_cache_key(const Request *request, char *out, size_t out_size) {
     const char *host;
     const char *method;
@@ -30,7 +30,7 @@ cache_result_t http_build_cache_key(const Request *request, char *out, size_t ou
     return CACHE_SUCCESS;
 }
 
-// Decide si una peticion es cacheable segun reglas simples de HTTP. 
+// Determines whether a request is cacheable using simple HTTP rules.
 cache_result_t http_request_is_cacheable(const Request *request) {
     if (request == NULL || request->headerList == NULL) {
         return IS_NOT_CACHEABLE;
@@ -58,7 +58,7 @@ cache_result_t http_request_is_cacheable(const Request *request) {
     return IS_CACHEABLE;
 }
 
-// Inicializa la cache persistente sin borrar archivos previos.
+// Initializes persistent cache storage without deleting previous files.
 cache_result_t cache_init(cache_store_t *store, const char *cache_dir, int default_ttl) {
     if (store == NULL || cache_dir == NULL || default_ttl <= 0) {
         return CACHE_ERROR;
@@ -86,7 +86,7 @@ cache_result_t cache_init(cache_store_t *store, const char *cache_dir, int defau
     return CACHE_SUCCESS;
 }
 
-// Busca una clave en el indice y aplica validacion perezosa del TTL.
+// Looks up a key in the index and applies lazy TTL validation.
 cache_result_t cache_lookup(cache_store_t *store, const char *cache_key, char *out_file_path, size_t out_size) {
     FILE *index_file;
     char line[CACHE_KEY_MAX + CACHE_PATH_MAX + 64];
@@ -135,7 +135,7 @@ cache_result_t cache_lookup(cache_store_t *store, const char *cache_key, char *o
     return CACHE_NOT_FOUND;
 }
 
-// Guarda la respuesta en un archivo nuevo y registra su vencimiento en el indice.
+// Stores the response in a new file and registers its expiration in the index.
 cache_result_t cache_save(cache_store_t *store, const char *cache_key, const char *response_data, size_t response_size) {
     FILE *index_file;
     char file_path[CACHE_PATH_MAX];
@@ -163,7 +163,8 @@ cache_result_t cache_save(cache_store_t *store, const char *cache_key, const cha
         pthread_mutex_unlock(&store->mutex);
         return CACHE_ERROR;
     }
-    // índice de la respuesta guardada en disco, con formato: expires_at|file_path|cache_key, esto para poder hacer la busqueda del archivo, eliminar o actualizar mas adelante
+    // Index entry format for cached responses on disk: expires_at|file_path|cache_key.
+    // This makes it possible to look up, delete, or update the cached file later.
     index_file = fopen(store->index_path, "a");
     if (index_file == NULL) {
         remove(file_path);
@@ -177,7 +178,7 @@ cache_result_t cache_save(cache_store_t *store, const char *cache_key, const cha
     return CACHE_SUCCESS;
 }
 
-// Elimina una entrada del indice y tambien su archivo fisico.
+// Removes an entry from the index and its physical file.
 cache_result_t cache_delete(cache_store_t *store, const char *cache_key) {
     int removed_any = 0;
 
@@ -196,7 +197,7 @@ cache_result_t cache_delete(cache_store_t *store, const char *cache_key) {
     return removed_any ? CACHE_SUCCESS : CACHE_NOT_FOUND;
 }
 
-// Recorre el indice completo y elimina recursos cuyo TTL ya vencio.
+// Scans the full index and removes resources whose TTL has already expired.
 cache_result_t cache_cleanup_expired(cache_store_t *store) {
     int removed_any = 0;
 
@@ -215,7 +216,7 @@ cache_result_t cache_cleanup_expired(cache_store_t *store) {
     return removed_any ? CACHE_SUCCESS : CACHE_NOT_FOUND;
 }
 
-// Crea y desacopla el hilo limpiador para que corra en background.
+// Creates and detaches the cleaner thread so it runs in the background.
 cache_result_t cache_start_cleaner_thread(cache_store_t *store) {
     pthread_t cleaner_thread;
 

@@ -4,7 +4,7 @@
 #include "../HTTP/HttpParser.h"
 #include "cacheTypes.h"
 
-// Funciones para manejar la cache de respuestas HTTP en disco, con un indice simple y un hilo limpiador de expirados. 
+// Functions for managing on-disk HTTP response cache with a simple index and an expired-entry cleaner thread.
 cache_result_t http_request_is_cacheable(const Request *request);
 
 cache_result_t http_build_cache_key(const Request *request, char *out, size_t out_size);
