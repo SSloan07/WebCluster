@@ -1,6 +1,7 @@
 #include "backend_main.h"
 #include "proxy_main.h"
 
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -57,6 +58,7 @@ static int run_backend_from_menu(void) {
 }
 
 int main(void) {
+    signal(SIGPIPE, SIG_IGN);
     int option;
 
     printf("=== [PIBL-WS] Menu de inicio ===\n");
