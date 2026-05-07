@@ -7012,3 +7012,39 @@ Contenido:
 <h1>index restaurado</h1><p>Creado otra vez con PUT.</p>
 ========================
 [2026-05-05 21:44:10] [INFO] Comunicacion completada correctamente
+[2026-05-06 19:05:33] [INFO] PIBL iniciado correctamente
+[2026-05-06 19:05:33] [INFO] Archivo de configuracion cargado correctamente
+
+[2026-05-06 19:06:33] ===== REQUEST =====
+Cliente: 127.0.0.1:46052
+Backend: 127.0.0.1:5001
+Contenido:
+GET /index.html HTTP/1.1\r\n
+Host: 127.0.0.1:8080\r\n
+User-Agent: curl/8.19.0\r\n
+Accept: */*\r\n
+\r\n
+
+=======================
+
+[2026-05-06 19:06:33] ===== RESPONSE =====
+Cliente: 127.0.0.1:46052
+Backend: 127.0.0.1:5001
+Contenido:
+HTTP/1.1 200 OK\r\n
+Date: Thu, 07 May 2026 00:06:33 GMT\r\n
+Content-Length: 54\r\n
+Content-Type: text/html\r\n
+Server: El server de los mas papus\r\n
+Connection: close\r\n
+\r\n
+
+========================
+
+[2026-05-06 19:06:33] ===== RESPONSE =====
+Cliente: 127.0.0.1:46052
+Backend: 127.0.0.1:5001
+Contenido:
+<h1>Hello from WebCluster backend, this is a test</h1>
+========================
+[2026-05-06 19:06:33] [INFO] Comunicacion completada correctamente

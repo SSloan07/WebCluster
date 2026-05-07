@@ -2,6 +2,7 @@
 #include "src/Network/tcp.h"
 #include "src/HTTP/HttpParser.h"
 #include "src/HTTP/http_peer/utils/enumToString.h"
+#include "backend_main.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -140,7 +141,7 @@ static void ensure_error_response(HTTP_Response *response) {
     }
 }
 
-int main(int argc, char *argv[]) {
+int backend_main(int argc, char *argv[]) {
     if (argc < 3) {
         fprintf(stderr, "Uso: %s <puerto> <document_root> [nombre_backend]\n", argv[0]);
         return 1;
